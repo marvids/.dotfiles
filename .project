@@ -1,0 +1,49 @@
+#!/bin/bash
+
+clear_project() {
+    local PROJECT=$ACTIVE_PROJECT
+    local PROJECT_PATH
+    __get_project "$PROJECT"
+    __remove_path "$PROJECT_PATH"
+    local WINDOW_TITLE=$(__get_window_title)
+    __set_window_title "${WINDOW_TITLE% ($ACTIVE_PROJECT)}"
+    unset ACTIVE_PROJECT
+}
+
+set_project() {
+    if [[ -n $ACTIVE_PROJECT ]]; then
+        clear_project
+    fi
+    local PROJECT="$1"
+    local PROJECT_PATH
+    __get_project "$PROJECT"
+    __add_path "$PROJECT_PATH"
+    export ACTIVE_PROJECT="$PROJECT"
+    local WINDOW_TITLE=$(__get_window_title)
+    __set_window_title "$WINDOW_TITLE ($ACTIVE_PROJECT)"
+}
+
+__get_window_title() {
+    echo $(tmux list-windows -F "#{window_active}	#W" | grep "^1" | cut -f 2)
+}
+
+__set_window_title() {
+    printf '\033k'"$1"'\033\\'
+}
+
+__add_path() {
+    PATH=$PATH:"$1"
+}
+
+__remove_path() {
+    PATH=${PATH%:"$1"}
+}
+
+__complete_project() {
+    if [[ $COMP_CWORD == 1 ]]; then
+        local CUR=${COMP_WORDS[COMP_CWORD]}
+        local WORDS=$(type __get_project | grep -E "^\s*\w+\)$" | grep -Eo "\w+")
+        COMPREPLY=( $( compgen -W "$WORDS" -- $CUR ) )
+    fi
+}
+complete -F __complete_project set_project

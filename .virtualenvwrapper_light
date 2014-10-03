@@ -1,0 +1,29 @@
+#!/bin/bash
+
+workon() {
+    local ENV=$1
+    source $VIRTUALENV_DIR/$ENV/Scripts/activate
+}
+__complete_virtualenvs() {
+    if [[ $COMP_CWORD == 1 ]]; then
+        local CUR=${COMP_WORDS[COMP_CWORD]}
+        local WORDS=$(find $VIRTUALENV_DIR -maxdepth 1 -mindepth 1 -type d -exec basename {} \;)
+        COMPREPLY=( $( compgen -W "$WORDS" -- $CUR ) )
+    fi
+}
+complete -F __complete_virtualenvs workon
+
+mkvirtualenv() {
+    local ENV=$1
+    pushd $VIRTUALENV_DIR
+    virtualenv $ENV
+    popd
+}
+
+rmvirtualenv() {
+    local ENV=$1
+    pushd $VIRTUALENV_DIR
+    rm -rf $ENV
+    popd
+}
+complete -F __complete_virtualenvs rmvirtualenv
