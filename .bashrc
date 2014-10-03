@@ -16,7 +16,6 @@ alias la='ls -al'
 
 export TERM=xterm-256color
 
-source ~/.prompt
 export VIRTUAL_ENV_DISABLE_PROMPT=True
 
 PROMPT_COMMAND='history -a;'
@@ -42,8 +41,9 @@ export HISTTIMEFORMAT='%F %T '
 # Append to bash_history instead of overwriting
 shopt -s histappend
 
-source .project
-source .virtualenvwrapper_light
-
+source ~/.prompt
+source ~/.project
+source ~/.virtualenvwrapper_light
 [[ -f ~/.localrc ]] && source ~/.localrc
+
 

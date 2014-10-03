@@ -31,3 +31,4 @@ Transparency=off
 AllowBlinking=yes
 Columns=120
 Rows=50
+OpaqueWhenFocused=no
