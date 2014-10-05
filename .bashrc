@@ -40,9 +40,8 @@ shopt -s histappend
 
 eval "$(dircolors ~/.dir_colors)"
 
-source /usr/bin/virtualenvwrapper.sh
-source ~/.prompt
-source ~/.project
-
-[[ -f ~/.localrc ]] && source ~/.localrc
-
+for file in ~/.bash.d/* ; do
+    if [ -f "$file" ] ; then
+        . "$file"
+    fi
+done
