@@ -38,10 +38,4 @@ export HISTTIMEFORMAT='%F %T '
 # Append to bash_history instead of overwriting
 shopt -s histappend
 
-eval "$(dircolors ~/.dir_colors)"
-
-for file in ~/.bash.d/* ; do
-    if [ -f "$file" ] ; then
-        . "$file"
-    fi
-done
+find ~/.bash.d -regex "^.*/[0-9][0-9]-.*" -exec "[[ -f {} ]] && source {}" \;
