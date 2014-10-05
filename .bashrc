@@ -5,20 +5,12 @@
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
 
-eval `dircolors ~/.dir_colors`
-
 alias ls='ls --color=auto'
 alias grep='grep --color=auto'
 alias t='tmux attach || tmux new'
 alias c='cd ..'
 alias ll='ls -l'
 alias la='ls -al'
-
-export TERM=xterm-256color
-
-export VIRTUAL_ENV_DISABLE_PROMPT=True
-
-PROMPT_COMMAND='history -a;'
 
 man() {
     env LESS_TERMCAP_mb=$'\E[01;31m' \
@@ -31,6 +23,11 @@ man() {
     man "$@"
 }
 
+export TERM=xterm-256color
+export WORKON_HOME=~/.virtualenvs
+export VIRTUAL_ENV_DISABLE_PROMPT=True
+export PROMPT_COMMAND='history -a;'
+
 # Bash history settings
 export HISTFILESIZE=1000000
 export HISTSIZE=100000
@@ -41,9 +38,11 @@ export HISTTIMEFORMAT='%F %T '
 # Append to bash_history instead of overwriting
 shopt -s histappend
 
+eval "$(dircolors ~/.dir_colors)"
+
+source /usr/bin/virtualenvwrapper.sh
 source ~/.prompt
 source ~/.project
-source ~/.virtualenvwrapper_light
-[[ -f ~/.localrc ]] && source ~/.localrc
 
+[[ -f ~/.localrc ]] && source ~/.localrc
 

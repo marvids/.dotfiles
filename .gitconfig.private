@@ -1,0 +1,16 @@
+[user]
+	name = Mikael Arvids
+	email = mikael.arvids@gmail.com
+[color]
+	ui = auto
+[alias]
+    ci = commit
+    st = status
+    br = branch
+    co = checkout
+    df = diff
+    dc = diff --cached
+	glog = log --graph --oneline --all --decorate
+
+[push]
+	default = simple
