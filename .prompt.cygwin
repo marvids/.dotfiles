@@ -83,7 +83,7 @@ User="\u"
 Host="\h"
 
 source ~/.git-prompt
-export PS1=\\n┌[$Yellow$Time24h$Color_Off]" "$Purple$User@$Host" "$Blue$PathShort'$(\
+export PS1=\\n┌[$Yellow$Time24h$Color_Off]" "$Blue$PathShort'$(\
 if [ -n "$ACTIVE_PROJECT" ]; then \
     echo -n " '$Green'$ACTIVE_PROJECT"; \
 fi;\
