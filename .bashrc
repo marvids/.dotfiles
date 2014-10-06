@@ -38,8 +38,8 @@ export HISTTIMEFORMAT='%F %T '
 # Append to bash_history instead of overwriting
 shopt -s histappend
 
-for file in $(find ~/.bash.d -regex "^.*/[0-9][0-9]-.*"); do
-    if [ -f "$file" ]; then
+for file in ~/.bash.d/*; do
+    if [[ -f $file ]] && [[ $(basename "$file") =~ ^[0-9]{2}-.* ]] ; then
         source "$file"
     fi
 done

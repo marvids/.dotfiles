@@ -1,13 +1,17 @@
 #!/bin/bash
 
 clear_project() {
-    local PROJECT=$ACTIVE_PROJECT
-    local PROJECT_PATH
-    __get_project "$PROJECT"
-    __remove_path "$PROJECT_PATH"
-    local WINDOW_TITLE=$(__get_window_title)
-    __set_window_title "${WINDOW_TITLE% ($ACTIVE_PROJECT)}"
-    unset ACTIVE_PROJECT
+    if [[ -n $ACTIVE_PROJECT ]]; then
+        local PROJECT=$ACTIVE_PROJECT
+        local PROJECT_PATH
+        __get_project "$PROJECT"
+        if [[ -n $PROJECT_PATH ]]; then
+            __remove_path "$PROJECT_PATH"
+            local WINDOW_TITLE=$(__get_window_title)
+            __set_window_title "${WINDOW_TITLE% ($ACTIVE_PROJECT)}"
+            unset ACTIVE_PROJECT
+        fi
+    fi
 }
 
 set_project() {
@@ -17,10 +21,12 @@ set_project() {
     local PROJECT="$1"
     local PROJECT_PATH
     __get_project "$PROJECT"
-    __add_path "$PROJECT_PATH"
-    export ACTIVE_PROJECT="$PROJECT"
-    local WINDOW_TITLE=$(__get_window_title)
-    __set_window_title "$WINDOW_TITLE ($ACTIVE_PROJECT)"
+    if [[ -n $PROJECT_PATH ]]; then
+        __add_path "$PROJECT_PATH"
+        export ACTIVE_PROJECT="$PROJECT"
+        local WINDOW_TITLE=$(__get_window_title)
+        __set_window_title "$WINDOW_TITLE ($ACTIVE_PROJECT)"
+    fi
 }
 
 __get_window_title() {
@@ -39,10 +45,20 @@ __remove_path() {
     PATH=${PATH%:"$1"}
 }
 
+__get_project() {
+    local PROJECT_CFG="$PROJECTS_DIR/$1"
+    unset PROJECT_PATH
+    if [[ -f $PROJECT_CFG ]]; then
+        source $PROJECT_CFG
+    else
+        echo "Unknown project: $1"
+    fi
+}
+
 __complete_project() {
     if [[ $COMP_CWORD == 1 ]]; then
         local CUR=${COMP_WORDS[COMP_CWORD]}
-        local WORDS=$(type __get_project | grep -E "^\s*\w+\)$" | grep -Eo "\w+")
+        local WORDS=$(find ~/projects/ -type f | xargs -l basename)
         COMPREPLY=( $( compgen -W "$WORDS" -- $CUR ) )
     fi
 }
