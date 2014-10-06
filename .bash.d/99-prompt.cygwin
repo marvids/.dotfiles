@@ -1,4 +1,8 @@
 #!/bin/bash
+
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+source $DIR/prompt-env
+
 export PS1=\\n┌[$Yellow$Time24h$Color_Off]" "$Blue$PathShort'$(\
 if [ -n "$ACTIVE_PROJECT" ]; then \
     echo -n " '$Green'$ACTIVE_PROJECT"; \

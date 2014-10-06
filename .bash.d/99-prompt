@@ -1,4 +1,8 @@
 #!/bin/bash
+
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+source $DIR/prompt-env
+
 export PS1=\\n┌[$Yellow$Time24h$Color_Off]" "$Purple$User@$Host" "$Blue$PathShort'$(\
 if [ -n "$VIRTUAL_ENV" ]; then \
     echo -n " "; \
