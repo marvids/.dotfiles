@@ -2,15 +2,18 @@
 
 clear_project() {
     if [[ -n $ACTIVE_PROJECT ]]; then
-        local PROJECT=$ACTIVE_PROJECT
-        local PROJECT_PATH
+        local PROJECT="$ACTIVE_PROJECT"
         __get_project "$PROJECT"
-        if [[ -n $PROJECT_PATH ]]; then
-            __remove_path "$PROJECT_PATH"
-            local WINDOW_TITLE=$(__get_window_title)
-            __set_window_title "${WINDOW_TITLE% ($ACTIVE_PROJECT)}"
-            unset ACTIVE_PROJECT
-        fi
+
+        [[ -n $VIRTUALENV_INSTANCE ]] && deactivate
+        unset VIRTUALENV_INSTANCE
+
+        [[ -n $PROJECT_PATH ]] && __remove_path "$PROJECT_PATH"
+        unset PROJECT_PATH
+
+        local WINDOW_TITLE=$(__get_window_title)
+        __set_window_title "${WINDOW_TITLE% ($ACTIVE_PROJECT)}"
+        unset ACTIVE_PROJECT
     fi
 }
 
@@ -18,15 +21,16 @@ set_project() {
     if [[ -n $ACTIVE_PROJECT ]]; then
         clear_project
     fi
+
     local PROJECT="$1"
-    local PROJECT_PATH
     __get_project "$PROJECT"
-    if [[ -n $PROJECT_PATH ]]; then
-        __add_path "$PROJECT_PATH"
-        export ACTIVE_PROJECT="$PROJECT"
-        local WINDOW_TITLE=$(__get_window_title)
-        __set_window_title "$WINDOW_TITLE ($ACTIVE_PROJECT)"
-    fi
+
+    [[ -n $VIRTUALENV_INSTANCE ]] && workon "$VIRTUALENV_INSTANCE"
+    [[ -n $PROJECT_PATH ]] && __add_path "$PROJECT_PATH"
+
+    export ACTIVE_PROJECT="$PROJECT"
+    local WINDOW_TITLE=$(__get_window_title)
+    __set_window_title "$WINDOW_TITLE ($ACTIVE_PROJECT)"
 }
 
 __get_window_title() {
@@ -46,8 +50,7 @@ __remove_path() {
 }
 
 __get_project() {
-    local PROJECT_CFG="$PROJECTS_DIR/$1"
-    unset PROJECT_PATH
+    local PROJECT_CFG="$PROJECTS_DIR/$1/conf"
     if [[ -f $PROJECT_CFG ]]; then
         source $PROJECT_CFG
     else
@@ -58,7 +61,7 @@ __get_project() {
 __complete_project() {
     if [[ $COMP_CWORD == 1 ]]; then
         local CUR=${COMP_WORDS[COMP_CWORD]}
-        local WORDS=$(find ~/projects/ -type f | xargs -l basename)
+        local WORDS=$(find ~/projects/ -maxdepth 1 | xargs -l basename)
         COMPREPLY=( $( compgen -W "$WORDS" -- $CUR ) )
     fi
 }
