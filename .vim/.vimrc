@@ -218,6 +218,11 @@ endfunc
 autocmd BufWrite *.py :call DeleteTrailingWS()
 autocmd BufWrite *.coffee :call DeleteTrailingWS()
 
+" vimdiff mappings
+if &diff
+    nmap <A-n> ]cz.
+    nmap <A-p> [cz.
+endif
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Spell checking
