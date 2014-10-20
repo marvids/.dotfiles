@@ -11,6 +11,7 @@
     df = diff
     dc = diff --cached
 	glog = log --graph --oneline --all --decorate
+	glog-orphans = !git glog $(git rev-list -g --all)
 
 [push]
 	default = simple

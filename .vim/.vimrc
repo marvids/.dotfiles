@@ -89,16 +89,9 @@ set number
 " Use system clipboard
 set clipboard=unnamed
 
-" Show whitespace
-set listchars=tab:>-,trail:~,extends:>,precedes:<
-hi NonText ctermfg=7 guifg=#505050
-hi SpecialKey ctermfg=7 guifg=#505050
-set list
-
 " Highlight too long lines
 "highlight OverLength ctermbg=red ctermfg=white guibg=#892929
 "match OverLength /\%81v.\+/
-
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Colors and Fonts
@@ -253,6 +246,11 @@ endw
 
 set timeout ttimeoutlen=50
 
+" Show whitespace
+set listchars=tab:>-,trail:~,extends:>,precedes:<
+hi NonText ctermfg=237 ctermbg=none
+hi SpecialKey ctermfg=237 ctermbg=none
+set list
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Plugin settings
@@ -260,3 +258,9 @@ set timeout ttimeoutlen=50
 noremap <F2> :NERDTreeToggle<cr>
 let g:airline_powerline_fonts = 1
 let g:airline_theme = 'base16'
+
+let g:jedi#show_call_signatures = 0
+let g:jedi#popup_on_dot = 0
+
+highlight BookmarkSign ctermbg=black ctermfg=4
+highlight BookmarkAnnotationSign ctermbg=black ctermfg=3
