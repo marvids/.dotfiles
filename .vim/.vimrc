@@ -7,10 +7,6 @@ set history=700
 " Be improved
 set nocompatible
 
-" Enable filetype plugins
-filetype plugin on
-filetype indent on
-
 " Set to auto read when a file is changed from the outside
 set autoread
 
@@ -47,6 +43,8 @@ Plugin 'altercation/vim-colors-solarized'
 Plugin 'vimwiki/vimwiki'
 Plugin 'SirVer/ultisnips'
 Plugin 'mhinz/vim-signify'
+Plugin 'tpope/vim-sleuth'
+Plugin 'honza/vim-snippets'
 
 call vundle#end()            " required
 filetype plugin indent on    " required
@@ -303,3 +301,7 @@ let g:jedi#popup_on_dot = 0
 
 highlight BookmarkSign ctermbg=black ctermfg=4
 highlight BookmarkAnnotationSign ctermbg=black ctermfg=3
+
+let g:UltiSnipsExpandTrigger="<c-h>"
+let g:UltiSnipsJumpForwardTrigger="<c-k>"
+let g:UltiSnipsJumpBackwardTrigger="<c-j>"
