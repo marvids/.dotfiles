@@ -43,6 +43,8 @@ Plugin 'altercation/vim-colors-solarized'
 Plugin 'vimwiki/vimwiki'
 Plugin 'SirVer/ultisnips'
 Plugin 'mhinz/vim-signify'
+Plugin 'tpope/vim-sleuth'
+Plugin 'honza/vim-snippets'
 
 call vundle#end()            " required
 filetype plugin indent on    " required
@@ -146,7 +148,7 @@ set encoding=utf8
 " Use Unix as the standard file type
 set ffs=unix,dos,mac
 
-highlight SignColumn ctermbg=black guibg=black
+highlight SignColumn ctermbg=235 guibg=black
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Files, backups and undo
@@ -297,5 +299,9 @@ let g:airline_theme = 'base16'
 let g:jedi#show_call_signatures = 0
 let g:jedi#popup_on_dot = 0
 
-highlight BookmarkSign ctermbg=black ctermfg=4
-highlight BookmarkAnnotationSign ctermbg=black ctermfg=3
+highlight BookmarkSign ctermbg=235
+highlight BookmarkAnnotationSign ctermbg=235
+
+let g:UltiSnipsExpandTrigger="<c-h>"
+let g:UltiSnipsJumpForwardTrigger="<c-k>"
+let g:UltiSnipsJumpBackwardTrigger="<c-j>"
