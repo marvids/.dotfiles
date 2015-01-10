@@ -24,6 +24,7 @@ command! W w !sudo tee % > /dev/null
 " => Vundle
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 set rtp+=~/.vim/bundle/Vundle.vim
+filetype off
 call vundle#begin()
 
 " let Vundle manage Vundle, required
@@ -38,13 +39,15 @@ Plugin 'bling/vim-airline'
 Plugin 'MattesGroeger/vim-bookmarks'
 Plugin 'dkprice/vim-easygrep'
 Plugin 'tpope/vim-fugitive'
-Plugin 'Valloric/YouCompleteMe'
+"#Plugin 'Valloric/YouCompleteMe'
 Plugin 'altercation/vim-colors-solarized'
 Plugin 'vimwiki/vimwiki'
 Plugin 'SirVer/ultisnips'
 Plugin 'mhinz/vim-signify'
 Plugin 'tpope/vim-sleuth'
 Plugin 'honza/vim-snippets'
+Plugin 'othree/xml.vim'
+Plugin 'm42e/arxml.vim'
 
 call vundle#end()            " required
 filetype plugin indent on    " required
@@ -140,6 +143,7 @@ if has("gui_running")
     set guioptions-=T
     set guioptions-=e
     set guitablabel=%M\ %t
+    set guifont=DejaVu_Sans_Mono_for_Powerline:h8:cANSI
 endif
 
 " Set utf8 as standard encoding and en_US as the standard language
@@ -253,6 +257,8 @@ inoremap <A-k> <Esc>:m .-2<CR>==gi
 vnoremap <A-j> :m '>+1<CR>gv=gv
 vnoremap <A-k> :m '<-2<CR>gv=gv
 
+autocmd FileType arxml nmap <leader>d :call FollowShortName()<CR>zv<CR>
+autocmd FileType arxml nmap <leader>g :call FindShortNameReferences()<CR>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Spell checking
@@ -285,8 +291,8 @@ set timeout ttimeoutlen=50
 
 " Show whitespace
 set listchars=tab:>-,trail:~,extends:>,precedes:<
-hi NonText ctermfg=237 ctermbg=none
-hi SpecialKey ctermfg=237 ctermbg=none
+hi NonText ctermfg=237 ctermbg=none guifg=#3a3a3a guibg=NONE
+hi SpecialKey ctermfg=237 ctermbg=none guifg=#3a3a3a guibg=NONE
 set list
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
