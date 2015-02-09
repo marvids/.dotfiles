@@ -12,12 +12,15 @@
 	dc = diff --cached
 	glog = log --graph --oneline --all --decorate
 	glog-orphans = !git glog $(git rev-list -g --all)
+	cp = cherry-pick
 [push]
 	default = simple
 [core]
+	autocrlf = false
 	excludesfile = ~/.gitignore
 	editor = vim
 	preloadindex = true
 	fscache = true
+	whitespace = blank-at-eol,space-before-tab,blank-at-eof,cr-at-eol,tab-in-indent
 [gc]
 	auto = 256
