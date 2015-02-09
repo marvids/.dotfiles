@@ -19,38 +19,35 @@ let g:mapleader = ","
 " (useful for handling the permission-denied error)
 command! W w !sudo tee % > /dev/null
 
+" Enable filetype plugins
+filetype plugin indent on
+
+set rtp+=~/.vim " Needed for gvim on windows
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Vundle
+" => Plug
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-set rtp+=~/.vim/bundle/Vundle.vim
-filetype off
-call vundle#begin()
+call plug#begin('~/.vim/plugged')
 
-" let Vundle manage Vundle, required
-Plugin 'gmarik/Vundle.vim'
+Plug 'kien/ctrlp.vim'
+Plug 'gregsexton/gitv'
+Plug 'sjl/gundo.vim', { 'on': 'GundoToggle' }
+Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
+Plug 'majutsushi/tagbar'
+Plug 'bling/vim-airline'
+Plug 'MattesGroeger/vim-bookmarks'
+Plug 'dkprice/vim-easygrep'
+Plug 'tpope/vim-fugitive'
+Plug 'altercation/vim-colors-solarized'
+Plug 'vimwiki/vimwiki'
+Plug 'mhinz/vim-signify'
+Plug 'tpope/vim-sleuth'
+Plug 'honza/vim-snippets'
+Plug 'othree/xml.vim'
+Plug 'm42e/arxml.vim', { 'for': 'arxml' }
 
-Plugin 'kien/ctrlp.vim'
-Plugin 'gregsexton/gitv'
-Plugin 'sjl/gundo.vim'
-Plugin 'scrooloose/nerdtree'
-Plugin 'majutsushi/tagbar'
-Plugin 'bling/vim-airline'
-Plugin 'MattesGroeger/vim-bookmarks'
-Plugin 'dkprice/vim-easygrep'
-Plugin 'tpope/vim-fugitive'
-"#Plugin 'Valloric/YouCompleteMe'
-Plugin 'altercation/vim-colors-solarized'
-Plugin 'vimwiki/vimwiki'
-Plugin 'SirVer/ultisnips'
-Plugin 'mhinz/vim-signify'
-Plugin 'tpope/vim-sleuth'
-Plugin 'honza/vim-snippets'
-Plugin 'othree/xml.vim'
-Plugin 'm42e/arxml.vim'
+call plug#end()
 
-call vundle#end()            " required
-filetype plugin indent on    " required
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => VIM user interface
