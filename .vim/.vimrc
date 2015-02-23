@@ -45,6 +45,7 @@ Plug 'tpope/vim-sleuth'
 Plug 'honza/vim-snippets'
 Plug 'othree/xml.vim'
 Plug 'm42e/arxml.vim', { 'for': 'arxml' }
+Plug 'stephpy/vim-yaml', { 'for': 'yaml' }
 
 call plug#end()
 
