@@ -46,7 +46,7 @@ Plug 'honza/vim-snippets'
 Plug 'othree/xml.vim'
 Plug 'm42e/arxml.vim', { 'for': 'arxml' }
 Plug 'stephpy/vim-yaml', { 'for': 'yaml' }
-Plug 'python-rope/ropevim'
+Plug 'edkolev/tmuxline.vim'
 
 call plug#end()
 
