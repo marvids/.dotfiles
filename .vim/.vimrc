@@ -46,6 +46,7 @@ Plug 'honza/vim-snippets'
 Plug 'othree/xml.vim'
 Plug 'm42e/arxml.vim', { 'for': 'arxml' }
 Plug 'stephpy/vim-yaml', { 'for': 'yaml' }
+Plug 'python-rope/ropevim'
 
 call plug#end()
 
@@ -118,6 +119,10 @@ set clipboard=unnamed
 " Highlight too long lines
 "highlight OverLength ctermbg=red ctermfg=white guibg=#892929
 "match OverLength /\%81v.\+/
+
+" Open new splits to the right
+set splitright
+set splitbelow
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Colors and Fonts

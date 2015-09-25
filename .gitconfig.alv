@@ -10,9 +10,11 @@
 	co = checkout
 	df = diff
 	dc = diff --cached
-	glog = log --graph --oneline --all --decorate
-	glog-orphans = !git glog $(git rev-list -g --all)
+	glog = log --graph --oneline --decorate
+	gloga = log --graph --oneline --all --decorate
+	gloga-orphans = !git gloga $(git rev-list -g --all)
 	cp = cherry-pick
+	d = difftool
 [push]
 	default = simple
 [core]
@@ -26,3 +28,9 @@
 	auto = 256
 [diff]
 	submodule = log
+	tool = vimdiff
+[difftool]
+	prompt = false
+[merge]
+	conflictstyle = diff3
+	tool = vimdiff
