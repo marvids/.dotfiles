@@ -19,35 +19,37 @@ let g:mapleader = ","
 " (useful for handling the permission-denied error)
 command! W w !sudo tee % > /dev/null
 
+" Enable filetype plugins
+filetype plugin indent on
+
+set rtp+=~/.vim " Needed for gvim on windows
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Vundle
+" => Plug
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
+call plug#begin('~/.vim/plugged')
 
-" let Vundle manage Vundle, required
-Plugin 'gmarik/Vundle.vim'
+Plug 'kien/ctrlp.vim'
+Plug 'gregsexton/gitv'
+Plug 'sjl/gundo.vim', { 'on': 'GundoToggle' }
+Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
+Plug 'majutsushi/tagbar'
+Plug 'bling/vim-airline'
+Plug 'MattesGroeger/vim-bookmarks'
+Plug 'dkprice/vim-easygrep'
+Plug 'tpope/vim-fugitive'
+Plug 'altercation/vim-colors-solarized'
+Plug 'vimwiki/vimwiki'
+Plug 'mhinz/vim-signify'
+Plug 'tpope/vim-sleuth'
+Plug 'honza/vim-snippets'
+Plug 'othree/xml.vim'
+Plug 'm42e/arxml.vim', { 'for': 'arxml' }
+Plug 'stephpy/vim-yaml', { 'for': 'yaml' }
+Plug 'edkolev/tmuxline.vim'
 
-Plugin 'kien/ctrlp.vim'
-Plugin 'gregsexton/gitv'
-Plugin 'sjl/gundo.vim'
-Plugin 'scrooloose/nerdtree'
-Plugin 'majutsushi/tagbar'
-Plugin 'bling/vim-airline'
-Plugin 'MattesGroeger/vim-bookmarks'
-Plugin 'dkprice/vim-easygrep'
-Plugin 'tpope/vim-fugitive'
-Plugin 'Valloric/YouCompleteMe'
-Plugin 'altercation/vim-colors-solarized'
-Plugin 'vimwiki/vimwiki'
-Plugin 'SirVer/ultisnips'
-Plugin 'mhinz/vim-signify'
-Plugin 'tpope/vim-sleuth'
-Plugin 'honza/vim-snippets'
+call plug#end()
 
-call vundle#end()            " required
-filetype plugin indent on    " required
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => VIM user interface
@@ -118,6 +120,10 @@ set clipboard=unnamed
 "highlight OverLength ctermbg=red ctermfg=white guibg=#892929
 "match OverLength /\%81v.\+/
 
+" Open new splits to the right
+set splitright
+set splitbelow
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Colors and Fonts
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -140,6 +146,7 @@ if has("gui_running")
     set guioptions-=T
     set guioptions-=e
     set guitablabel=%M\ %t
+    set guifont=DejaVu_Sans_Mono_for_Powerline:h8:cANSI
 endif
 
 " Set utf8 as standard encoding and en_US as the standard language
@@ -253,6 +260,8 @@ inoremap <A-k> <Esc>:m .-2<CR>==gi
 vnoremap <A-j> :m '>+1<CR>gv=gv
 vnoremap <A-k> :m '<-2<CR>gv=gv
 
+autocmd FileType arxml nmap <leader>d :call FollowShortName()<CR>zv<CR>
+autocmd FileType arxml nmap <leader>g :call FindShortNameReferences()<CR>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Spell checking
@@ -285,8 +294,8 @@ set timeout ttimeoutlen=50
 
 " Show whitespace
 set listchars=tab:>-,trail:~,extends:>,precedes:<
-hi NonText ctermfg=237 ctermbg=none
-hi SpecialKey ctermfg=237 ctermbg=none
+hi NonText ctermfg=237 ctermbg=none guifg=#3a3a3a guibg=NONE
+hi SpecialKey ctermfg=237 ctermbg=none guifg=#3a3a3a guibg=NONE
 set list
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
