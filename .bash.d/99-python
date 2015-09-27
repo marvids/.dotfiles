@@ -1,1 +1,1 @@
-export PYTHONSTARTUP="/home/mikael.arvids/.pythonstartup"
+export PYTHONSTARTUP="$HOME/.pythonstartup"
