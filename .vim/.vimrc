@@ -130,7 +130,8 @@ set splitbelow
 " Enable syntax highlighting
 syntax enable
 
-set background=dark
+let &background = $THEME
+
 try
     let g:solarized_termcolors=256
     let g:solarized_termtrans=1
