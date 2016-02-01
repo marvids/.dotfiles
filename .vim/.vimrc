@@ -50,6 +50,8 @@ Plug 'stephpy/vim-yaml', { 'for': 'yaml' }
 Plug 'edkolev/tmuxline.vim'
 Plug 'vim-scripts/DrawIt'
 Plug 'davidhalter/jedi-vim'
+Plug 'justmao945/vim-clang'
+Plug 'jeetsukumaran/vim-buffergator'
 
 call plug#end()
 
@@ -133,7 +135,8 @@ set splitbelow
 " Enable syntax highlighting
 syntax enable
 
-set background=dark
+let &background = $THEME
+
 try
     let g:solarized_termcolors=256
     let g:solarized_termtrans=1
@@ -307,6 +310,9 @@ set list
 noremap <F2> :NERDTreeToggle<cr>
 let g:airline_powerline_fonts = 1
 let g:airline_theme = 'base16'
+
+let g:jedi#show_call_signatures = 0
+let g:jedi#popup_on_dot = 1
 
 highlight BookmarkSign ctermbg=235
 highlight BookmarkAnnotationSign ctermbg=235
