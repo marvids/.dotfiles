@@ -17,6 +17,7 @@
 	d = difftool
 [push]
 	default = simple
+	followTags = true
 [core]
 	autocrlf = false
 	excludesfile = ~/.gitignore
@@ -24,6 +25,7 @@
 	preloadindex = true
 	fscache = true
 	whitespace = blank-at-eol,space-before-tab,blank-at-eof,cr-at-eol,tab-in-indent
+	eol = crlf
 [gc]
 	auto = 256
 [diff]
