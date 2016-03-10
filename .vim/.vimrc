@@ -138,9 +138,21 @@ syntax enable
 
 set background=dark
 try
-    let g:solarized_termcolors=256
-    let g:solarized_termtrans=1
-    colorscheme solarized
+
+    if $THEME == "solarized"
+      colorscheme solarized
+      let g:solarized_termcolors=256
+      let g:solarized_termtrans=1
+      let g:airline_theme = 'base16'
+
+      highlight BookmarkSign ctermbg=235
+      highlight BookmarkAnnotationSign ctermbg=235
+      highlight SignColumn ctermbg=235 guibg=black
+    elseif $THEME == "gotham"
+      colorscheme gotham256
+      let g:airline_theme = 'gotham256'
+      highlight SignColumn ctermbg=233 guibg=black
+    endif
 catch
 endtry
 
@@ -161,7 +173,6 @@ set encoding=utf8
 " Use Unix as the standard file type
 set ffs=unix,dos,mac
 
-highlight SignColumn ctermbg=235 guibg=black
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Files, backups and undo
@@ -317,10 +328,6 @@ endfunction
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 noremap <F2> :NERDTreeToggle<cr>
 let g:airline_powerline_fonts = 1
-let g:airline_theme = 'base16'
-
-highlight BookmarkSign ctermbg=235
-highlight BookmarkAnnotationSign ctermbg=235
 
 let g:UltiSnipsExpandTrigger="<c-h>"
 let g:UltiSnipsJumpForwardTrigger="<c-k>"
@@ -332,6 +339,6 @@ set statusline+=%*
 
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_open = 0
 let g:syntastic_check_on_wq = 0
 
