@@ -33,6 +33,7 @@ Plug 'kien/ctrlp.vim'
 Plug 'gregsexton/gitv'
 Plug 'sjl/gundo.vim', { 'on': 'GundoToggle' }
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
+Plug 'scrooloose/syntastic'
 Plug 'majutsushi/tagbar'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
@@ -52,6 +53,8 @@ Plug 'vim-scripts/DrawIt'
 Plug 'davidhalter/jedi-vim'
 Plug 'justmao945/vim-clang'
 Plug 'jeetsukumaran/vim-buffergator'
+Plug 'chrisbra/csv.vim'
+Plug 'whatyouhide/vim-gotham'
 
 call plug#end()
 
@@ -135,12 +138,24 @@ set splitbelow
 " Enable syntax highlighting
 syntax enable
 
-let &background = $THEME
+let &background = "dark"
 
 try
-    let g:solarized_termcolors=256
-    let g:solarized_termtrans=1
-    colorscheme solarized
+
+    if $THEME == "solarized"
+      colorscheme solarized
+      let g:solarized_termcolors=256
+      let g:solarized_termtrans=1
+      let g:airline_theme = 'base16'
+
+      highlight BookmarkSign ctermbg=235
+      highlight BookmarkAnnotationSign ctermbg=235
+      highlight SignColumn ctermbg=235 guibg=black
+    elseif $THEME == "gotham"
+      colorscheme gotham256
+      let g:airline_theme = 'gotham256'
+      highlight SignColumn ctermbg=233 guibg=black
+    endif
 catch
 endtry
 
@@ -161,7 +176,6 @@ set encoding=utf8
 " Use Unix as the standard file type
 set ffs=unix,dos,mac
 
-highlight SignColumn ctermbg=235 guibg=black
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Files, backups and undo
@@ -176,7 +190,9 @@ set undofile
 set undodir=~/.vim/tmp/undo/
 
 " Put the viminfo file in .vim
-set viminfo+=n~/.vim/tmp/viminfo
+if !has('nvim')
+  set viminfo+=n~/.vim/tmp/viminfo
+endif
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -289,12 +305,14 @@ map <leader>s? z=
 noremap <Leader>m mmHmt:%s/<C-V><cr>//ge<cr>'tzt'm
 
 " Make vim recognize alt key
-let c='a'
-while c <= 'z'
-  exec "set <A-".c.">=\e".c
-  exec "imap \e".c." <A-".c.">"
-  let c = nr2char(1+char2nr(c))
-endw
+if !has("nvim")
+  let c='a'
+  while c <= 'z'
+    exec "set <A-".c.">=\e".c
+    exec "imap \e".c." <A-".c.">"
+    let c = nr2char(1+char2nr(c))
+  endw
+endif
 
 set timeout ttimeoutlen=50
 
@@ -304,19 +322,29 @@ hi NonText ctermfg=237 ctermbg=none guifg=#3a3a3a guibg=NONE
 hi SpecialKey ctermfg=237 ctermbg=none guifg=#3a3a3a guibg=NONE
 set list
 
+function! IcaLista()
+  %s/\([0-9][0-9,]*\w*\)Ändra/ \1/g
+endfunction
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Plugin settings
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 noremap <F2> :NERDTreeToggle<cr>
 let g:airline_powerline_fonts = 1
-let g:airline_theme = 'base16'
 
 let g:jedi#show_call_signatures = 0
 let g:jedi#popup_on_dot = 1
 
-highlight BookmarkSign ctermbg=235
-highlight BookmarkAnnotationSign ctermbg=235
-
 let g:UltiSnipsExpandTrigger="<c-h>"
 let g:UltiSnipsJumpForwardTrigger="<c-k>"
 let g:UltiSnipsJumpBackwardTrigger="<c-j>"
+
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 0
+let g:syntastic_check_on_wq = 0
+

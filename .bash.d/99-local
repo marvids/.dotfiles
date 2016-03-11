@@ -3,6 +3,6 @@
 alias skype='LD_PRELOAD=/usr/lib32/libv4l/v4l1compat.so skype'
 alias swine='sudo -u wineuser'
 export PATH=${PATH}:~/.local/bin
-export THEME=dark
+export THEME=solarized
 
 source /usr/bin/virtualenvwrapper.sh
