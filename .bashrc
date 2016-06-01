@@ -7,7 +7,7 @@
 
 alias ls='ls --color=auto'
 alias grep='grep --color=auto'
-alias t='tmux attach || tmux new'
+alias t='tmux -S attach || tmux new -S'
 alias c='cd ..'
 alias ll='ls -l'
 alias la='ls -al'
@@ -23,7 +23,7 @@ man() {
     man "$@"
 }
 
-export TERM=xterm-256color
+export TERM=screen-256color
 export WORKON_HOME=~/.virtualenvs
 export VIRTUAL_ENV_DISABLE_PROMPT=True
 export PROMPT_COMMAND='history -a;'

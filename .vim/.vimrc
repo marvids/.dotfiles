@@ -24,6 +24,12 @@ filetype plugin indent on
 
 set rtp+=~/.vim " Needed for gvim on windows
 
+" Source any .vimrc in the current directory
+set exrc
+
+" Restrict some commands since we can source any .vimrc
+set secure
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Plug
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -51,6 +57,7 @@ Plug 'stephpy/vim-yaml', { 'for': 'yaml' }
 Plug 'edkolev/tmuxline.vim'
 Plug 'vim-scripts/DrawIt'
 Plug 'davidhalter/jedi-vim'
+"Plug 'klen/python-mode'
 Plug 'justmao945/vim-clang'
 Plug 'jeetsukumaran/vim-buffergator'
 Plug 'chrisbra/csv.vim'
@@ -348,3 +355,22 @@ let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 0
 let g:syntastic_check_on_wq = 0
 
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => My commands
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+func! _conflict(filename)
+  exe "vsp" "__THEIRS__"
+  exe "silent" "read" "!git diff :1:".a:filename " :2:".a:filename
+  exe "set ft=diff"
+  exe "setlocal buftype=nofile"
+  exe "setlocal bufhidden=hide"
+  exe "setlocal noswapfile"
+
+  exe "sp" "__OURS__"
+  exe "silent" "read" "!git diff :1:".a:filename " :3:".a:filename
+  exe "set ft=diff"
+  exe "setlocal buftype=nofile"
+  exe "setlocal bufhidden=hide"
+  exe "setlocal noswapfile"
+endfunc
+command! Conflict call _conflict(@%)
