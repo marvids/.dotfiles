@@ -374,3 +374,7 @@ func! _conflict(filename)
   exe "setlocal noswapfile"
 endfunc
 command! Conflict call _conflict(@%)
+
+for f in split($ADDITIONAL_VIMRCS)
+    exe 'source' f
+endfor
