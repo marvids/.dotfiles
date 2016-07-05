@@ -13,7 +13,7 @@ clear_project() {
 
         [[ -n $PROJECT_PATH ]] && __remove_path "$PROJECT_PATH"
         unset PROJECT_PATH
-
+        unset ADDITIONAL_VIMRCS
         unset ACTIVE_PROJECT
     fi
 }
@@ -28,12 +28,15 @@ set_project() {
 
 
     if [[ -n $VIRTUALENV_INSTANCE ]]; then
-        cygpath -w $PROJECT_PYTHONPATH > $VIRTUALENV_DIR/$VIRTUALENV_INSTANCE/Lib/site-packages/project.pth
+        echo $PROJECT_PYTHONPATH > $VIRTUALENV_DIR/$VIRTUALENV_INSTANCE/Lib/site-packages/project.pth
         workon "$VIRTUALENV_INSTANCE"
     fi
+
+    export PROJECT_PATH="$PROJECTS_DIR/$PROJECT/bin"
     [[ -n $PROJECT_PATH ]] && __add_path "$PROJECT_PATH"
 
     export ACTIVE_PROJECT="$PROJECT"
+    export ADDITIONAL_VIMRCS=$( ls $PROJECTS_DIR/$PROJECT/.vim/*.vimrc)
 }
 
 __add_path() {
@@ -56,7 +59,7 @@ __get_project() {
 __complete_project() {
     if [[ $COMP_CWORD == 1 ]]; then
         local CUR=${COMP_WORDS[COMP_CWORD]}
-        local WORDS=$(find ~/projects/ -maxdepth 1 | xargs -l basename)
+        local WORDS=$(find $PROJECTS_DIR -maxdepth 1 -mindepth 1 | xargs -l basename)
         COMPREPLY=( $( compgen -W "$WORDS" -- $CUR ) )
     fi
 }

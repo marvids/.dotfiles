@@ -46,22 +46,26 @@ Plug 'vim-airline/vim-airline-themes'
 Plug 'MattesGroeger/vim-bookmarks'
 Plug 'dkprice/vim-easygrep'
 Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-dispatch'
 Plug 'altercation/vim-colors-solarized'
 Plug 'vimwiki/vimwiki'
 Plug 'mhinz/vim-signify'
 Plug 'tpope/vim-sleuth'
+Plug 'tpope/vim-surround'
 Plug 'honza/vim-snippets'
 Plug 'othree/xml.vim'
 Plug 'm42e/arxml.vim', { 'for': 'arxml' }
 Plug 'stephpy/vim-yaml', { 'for': 'yaml' }
 Plug 'edkolev/tmuxline.vim'
 Plug 'vim-scripts/DrawIt'
-Plug 'davidhalter/jedi-vim'
+"Plug 'davidhalter/jedi-vim'
 "Plug 'klen/python-mode'
-Plug 'justmao945/vim-clang'
+"Plug 'justmao945/vim-clang'
 Plug 'jeetsukumaran/vim-buffergator'
 Plug 'chrisbra/csv.vim'
 Plug 'whatyouhide/vim-gotham'
+Plug 'Valloric/YouCompleteMe', { 'do': './install.py --clang-completer' }
+Plug 'rdnetto/YCM-Generator', { 'branch': 'stable'}
 
 call plug#end()
 
@@ -354,6 +358,17 @@ let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 0
 let g:syntastic_check_on_wq = 0
+
+" YouCompleteMe
+nnoremap <leader>ygd :YcmCompleter GoToDefinition<CR>
+nnoremap <leader>ygg :YcmCompleter GoTo<CR>
+nnoremap <leader>ygh :YcmCompleter GoToInclude<CR>
+nnoremap <leader>ygc :YcmCompleter GoToDeclaration<CR>
+nnoremap <leader>ygr :YcmCompleter GoToReferences<CR>
+nnoremap <leader>ygi :YcmCompleter GoToImplementation<CR>
+
+" Don't ask about loading .ycm_confirm_extra_conf.py
+let g:ycm_confirm_extra_conf = 1
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => My commands

@@ -18,6 +18,8 @@
 [push]
 	default = simple
 	followTags = true
+[fetch]
+	recurseSubmodules = on-demand
 [core]
 	autocrlf = false
 	excludesfile = ~/.gitignore
@@ -36,3 +38,5 @@
 [merge]
 	conflictstyle = diff3
 	tool = vimdiff
+[status]
+	submoduleSummary = true
