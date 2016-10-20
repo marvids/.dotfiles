@@ -30,6 +30,8 @@ set exrc
 " Restrict some commands since we can source any .vimrc
 set secure
 
+let g:os = split(system('uname -o'))[0]
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Plug
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -67,8 +69,11 @@ Plug 'jeetsukumaran/vim-buffergator'
 Plug 'chrisbra/csv.vim'
 Plug 'tpope/vim-vinegar'
 "Plug 'whatyouhide/vim-gotham'
-Plug 'Valloric/YouCompleteMe', { 'do': './install.py --clang-completer' }
-"Plug 'rdnetto/YCM-Generator', { 'branch': 'stable'}
+
+if g:os != "Cygwin"
+  Plug 'Valloric/YouCompleteMe', { 'do': './install.py --clang-completer' }
+  "Plug 'rdnetto/YCM-Generator', { 'branch': 'stable'}
+endif
 
 call plug#end()
 
