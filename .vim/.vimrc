@@ -50,7 +50,8 @@ Plug 'tpope/vim-dispatch'
 Plug 'altercation/vim-colors-solarized'
 Plug 'vimwiki/vimwiki'
 Plug 'mhinz/vim-signify'
-Plug 'tpope/vim-sleuth'
+"Plug 'tpope/vim-sleuth'
+Plug 'ciaranm/detectindent'
 Plug 'tpope/vim-surround'
 Plug 'honza/vim-snippets'
 Plug 'othree/xml.vim'
@@ -58,15 +59,16 @@ Plug 'm42e/arxml.vim', { 'for': 'arxml' }
 Plug 'stephpy/vim-yaml', { 'for': 'yaml' }
 Plug 'edkolev/tmuxline.vim'
 Plug 'vim-scripts/DrawIt'
+"Plug 'davidhalter/jedi-vim'
+"Plug 'klen/python-mode'
+"Plug 'justmao945/vim-clang'
+"Plug 'vim-scripts/CCTree'
 Plug 'jeetsukumaran/vim-buffergator'
 Plug 'chrisbra/csv.vim'
-Plug 'whatyouhide/vim-gotham'
 Plug 'tpope/vim-vinegar'
-
-if has("unix")
-  Plug 'Valloric/YouCompleteMe', { 'do': './install.py --clang-completer' }
-  Plug 'rdnetto/YCM-Generator', { 'branch': 'stable'}
-endif
+"Plug 'whatyouhide/vim-gotham'
+Plug 'Valloric/YouCompleteMe', { 'do': './install.py --clang-completer' }
+"Plug 'rdnetto/YCM-Generator', { 'branch': 'stable'}
 
 call plug#end()
 
@@ -294,6 +296,12 @@ inoremap <A-k> <Esc>:m .-2<CR>==gi
 vnoremap <A-j> :m '>+1<CR>gv=gv
 vnoremap <A-k> :m '<-2<CR>gv=gv
 
+" Grep mappings
+:nnoremap gr :grep <cword> *<CR>
+:nnoremap Gr :grep <cword> %:p:h/*<CR>
+:nnoremap gR :grep '\b<cword>\b' *<CR>
+:nnoremap GR :grep '\b<cword>\b' %:p:h/*<CR>
+
 autocmd FileType arxml nmap <leader>d :call FollowShortName()<CR>zv<CR>
 autocmd FileType arxml nmap <leader>g :call FindShortNameReferences()<CR>
 
@@ -342,6 +350,7 @@ endfunction
 " => Plugin settings
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 noremap <F2> :NERDTreeToggle<cr>
+noremap <F3> :TagbarToggle<cr>
 let g:airline_powerline_fonts = 1
 
 let g:jedi#show_call_signatures = 0

@@ -7,7 +7,7 @@
 
 alias ls='ls --color=auto'
 alias grep='grep --color=auto'
-alias t='tmux -S attach || tmux new -S'
+alias t='tmux attach || tmux new'
 alias c='cd ..'
 alias ll='ls -l'
 alias la='ls -al'

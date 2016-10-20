@@ -3,6 +3,8 @@
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 source "$DIR/prompt-env"
 
+ENABLE_GIT_PROMPT=true
+
 export PS1=\\n┌[$Green$Time24h$Color_Off]" "$Blue$User@$Host" "$Cyan$PathShort'$(\
 if [ -n "$ACTIVE_PROJECT" ]; then \
     echo -n " '$Green'$ACTIVE_PROJECT"; \
@@ -11,18 +13,23 @@ if [ -n "$VIRTUAL_ENV" ]; then \
     echo -n " "; \
     echo -n "'$Purple'"$(basename $VIRTUAL_ENV); \
 fi;\
-git branch &>/dev/null;\
-if [ $? -eq 0 ]; then \
-  echo "$(echo `git status` | grep "nothing to commit" > /dev/null 2>&1; \
-  if [ "$?" -eq "0" ]; then \
-    # @4 - Clean repository - nothing to commit
-    echo "'$Green'"$(__git_ps1 " (%s)"); \
+if [ "$ENABLE_GIT_PROMPT" == 'true' ]; then \
+  git branch &>/dev/null;\
+  if [ $? -eq 0 ]; then \
+    echo "$(echo `git status` | grep "nothing to commit" > /dev/null 2>&1; \
+    if [ "$?" -eq "0" ]; then \
+      # @4 - Clean repository - nothing to commit
+      echo "'$Green'"$(__git_ps1 " (%s)"); \
+    else \
+      # @5 - Changes to working tree
+      echo "'$IRed'"$(__git_ps1 " {%s}"); \
+    fi) '\\n$Color_Off'└\$ "; \
   else \
-    # @5 - Changes to working tree
-    echo "'$IRed'"$(__git_ps1 " {%s}"); \
-  fi) '\\n$Color_Off'└\$ "; \
+    # @2 - Prompt when not in GIT repo
+    echo "'\\n$Color_Off'└\$ "; \
+  fi \
 else \
-  # @2 - Prompt when not in GIT repo
+  # Git prompt is disabled
   echo "'\\n$Color_Off'└\$ "; \
 fi)'
 
