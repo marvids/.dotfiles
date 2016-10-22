@@ -73,6 +73,7 @@ Plug 'tpope/vim-vinegar'
 if g:os != "Cygwin"
   Plug 'Valloric/YouCompleteMe', { 'do': './install.py --clang-completer' }
   "Plug 'rdnetto/YCM-Generator', { 'branch': 'stable'}
+  "Plug 'jeaye/color_coded', { 'do': './configure && make'}
 endif
 
 call plug#end()
