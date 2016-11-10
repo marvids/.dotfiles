@@ -27,6 +27,8 @@ export TERM=screen-256color
 export WORKON_HOME=~/.virtualenvs
 export VIRTUAL_ENV_DISABLE_PROMPT=True
 export PROMPT_COMMAND='history -a;'
+export VISUAL=vim
+export EDITOR="$VISUAL"
 
 # Bash history settings
 export HISTFILESIZE=1000000

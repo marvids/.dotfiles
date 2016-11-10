@@ -10,6 +10,9 @@ set nocompatible
 " Set to auto read when a file is changed from the outside
 set autoread
 
+" Run checktime in buffers, but avoiding the "Command Line" (q:) window
+au CursorHold * if getcmdwintype() == '' | checktime | endif
+
 " With a map leader it's possible to do extra key combinations
 " like <leader>w saves the current file
 let mapleader = ","
@@ -63,7 +66,8 @@ Plug 'edkolev/tmuxline.vim'
 Plug 'vim-scripts/DrawIt'
 "Plug 'davidhalter/jedi-vim'
 "Plug 'klen/python-mode'
-"Plug 'justmao945/vim-clang'
+Plug 'justmao945/vim-clang'
+Plug 'lyuts/vim-rtags'
 "Plug 'vim-scripts/CCTree'
 Plug 'jeetsukumaran/vim-buffergator'
 Plug 'chrisbra/csv.vim'
@@ -71,7 +75,7 @@ Plug 'tpope/vim-vinegar'
 "Plug 'whatyouhide/vim-gotham'
 
 if g:os != "Cygwin"
-  Plug 'Valloric/YouCompleteMe', { 'do': './install.py --clang-completer' }
+  "Plug 'Valloric/YouCompleteMe', { 'do': './install.py --clang-completer' }
   "Plug 'rdnetto/YCM-Generator', { 'branch': 'stable'}
   "Plug 'jeaye/color_coded', { 'do': './configure && make'}
 endif
