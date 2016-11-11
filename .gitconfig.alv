@@ -15,6 +15,7 @@
 	gloga-orphans = !git gloga $(git rev-list -g --all)
 	cp = cherry-pick
 	d = difftool
+	alias = config --get-regexp alias
 [push]
 	default = simple
 	followTags = true
