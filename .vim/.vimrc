@@ -51,12 +51,12 @@ Plug 'vim-airline/vim-airline-themes'
 Plug 'MattesGroeger/vim-bookmarks'
 Plug 'dkprice/vim-easygrep'
 Plug 'tpope/vim-fugitive'
-Plug 'tpope/vim-dispatch'
+"Plug 'tpope/vim-dispatch'
 Plug 'altercation/vim-colors-solarized'
 Plug 'vimwiki/vimwiki'
 Plug 'mattn/calendar-vim'
-Plug 'mhinz/vim-signify'
-"Plug 'tpope/vim-sleuth'
+"Plug 'mhinz/vim-signify'
+Plug 'airblade/vim-gitgutter'
 Plug 'ciaranm/detectindent'
 Plug 'tpope/vim-surround'
 Plug 'honza/vim-snippets'
@@ -69,14 +69,13 @@ Plug 'vim-scripts/DrawIt'
 "Plug 'klen/python-mode'
 Plug 'justmao945/vim-clang'
 Plug 'lyuts/vim-rtags'
-Plug 'justmao945/vim-clang'
 "Plug 'vim-scripts/CCTree'
 Plug 'jeetsukumaran/vim-buffergator'
 Plug 'chrisbra/csv.vim'
 Plug 'tpope/vim-vinegar'
-"Plug 'whatyouhide/vim-gotham'
 Plug 'rhysd/vim-clang-format'
 "Plug 'bbchung/clighter'
+Plug 'jiangmiao/auto-pairs'
 
 if g:os != "Cygwin"
   "Plug 'Valloric/YouCompleteMe', { 'do': './install.py --clang-completer' }
@@ -380,50 +379,18 @@ let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 0
 let g:syntastic_check_on_wq = 0
 
-" YouCompleteMe
-nnoremap <leader>ygd :YcmCompleter GoToDefinition<CR>
-nnoremap <leader>ygg :YcmCompleter GoTo<CR>
-nnoremap <leader>ygh :YcmCompleter GoToInclude<CR>
-nnoremap <leader>ygc :YcmCompleter GoToDeclaration<CR>
-nnoremap <leader>ygr :YcmCompleter GoToReferences<CR>
-nnoremap <leader>ygi :YcmCompleter GoToImplementation<CR>
-
-let g:ycm_register_as_syntastic_checker = 1 "default 1
-let g:Show_diagnostics_ui = 1 "default 1
-
-"will put icons in Vim's gutter on lines that have a diagnostic set.
-"Turning this off will also turn off the YcmErrorLine and YcmWarningLine highlighting
-let g:ycm_enable_diagnostic_signs = 1
-let g:ycm_enable_diagnostic_highlighting = 0
-let g:ycm_always_populate_location_list = 1 "default 0
-let g:ycm_open_loclist_on_ycm_diags = 1 "default 1
-
-let g:ycm_complete_in_strings = 1 "default 1
-let g:ycm_collect_identifiers_from_tags_files = 0 "default 0
-let g:ycm_path_to_python_interpreter = '' "default ''
-
-let g:ycm_server_use_vim_stdout = 0 "default 0 (logging to console)
-let g:ycm_server_log_level = 'info' "default info
-
-let g:ycm_global_ycm_extra_conf = '~/.ycm_extra_conf.py'  "where to search for .ycm_extra_conf.py if not found
-let g:ycm_confirm_extra_conf = 1
-
-let g:ycm_goto_buffer_command = 'same-buffer' "[ 'same-buffer', 'horizontal-split', 'vertical-split', 'new-tab' ]
-let g:ycm_filetype_whitelist = { '*': 1 }
-"let g:ycm_key_invoke_completion = '<C-Space>'
-
-nnoremap <F11> :YcmForceCompileAndDiagnostics <CR>
-
 " Don't ask about loading .ycm_confirm_extra_conf.py
 let g:ycm_confirm_extra_conf = 1
-
-" Clang format integraiton
-map <C-I> :pyf <path-to-this-file>/clang-format.py<CR>
-imap <C-I> <ESC>:pyf <path-to-this-file>/clang-format.py<CR>i
 
 " Clang format integration
 autocmd FileType c,cpp,objc nnoremap <buffer><Leader>cf :<C-u>ClangFormat<CR>
 autocmd FileType c,cpp,objc vnoremap <buffer><Leader>cf :ClangFormat<CR>
+
+" Format inserted lines after leaving insert mode
+let g:clang_format#auto_format_on_insert_leave = 1
+
+" Disable vim-clang format since we use vim-clang-format plugin
+let g:clang_enable_format_command = 0
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => My commands
