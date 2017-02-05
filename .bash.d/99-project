@@ -36,7 +36,7 @@ set_project() {
     [[ -n $PROJECT_PATH ]] && __add_path "$PROJECT_PATH"
 
     export ACTIVE_PROJECT="$PROJECT"
-    export ADDITIONAL_VIMRCS=$( ls $PROJECTS_DIR/$PROJECT/.vim/*.vimrc)
+    export ADDITIONAL_VIMRCS=$( ls $PROJECTS_DIR/$PROJECT/vimrc/*.vimrc)
 }
 
 __add_path() {
@@ -48,11 +48,9 @@ __remove_path() {
 }
 
 __get_project() {
-    local PROJECT_CFG="$PROJECTS_DIR/$1/conf"
+    local PROJECT_CFG="$PROJECTS_DIR/$1/bashrc"
     if [[ -f $PROJECT_CFG ]]; then
         source $PROJECT_CFG
-    else
-        echo "Unknown project: $1"
     fi
 }
 

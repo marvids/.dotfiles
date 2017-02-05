@@ -51,7 +51,7 @@ Plug 'vim-airline/vim-airline-themes'
 Plug 'MattesGroeger/vim-bookmarks'
 Plug 'dkprice/vim-easygrep'
 Plug 'tpope/vim-fugitive'
-"Plug 'tpope/vim-dispatch'
+Plug 'tpope/vim-dispatch'
 Plug 'altercation/vim-colors-solarized'
 Plug 'vimwiki/vimwiki'
 Plug 'mattn/calendar-vim'
@@ -59,6 +59,7 @@ Plug 'mattn/calendar-vim'
 Plug 'airblade/vim-gitgutter'
 Plug 'ciaranm/detectindent'
 Plug 'tpope/vim-surround'
+Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
 Plug 'othree/xml.vim'
 Plug 'm42e/arxml.vim', { 'for': 'arxml' }
@@ -67,18 +68,19 @@ Plug 'edkolev/tmuxline.vim'
 Plug 'vim-scripts/DrawIt'
 "Plug 'davidhalter/jedi-vim'
 "Plug 'klen/python-mode'
-Plug 'justmao945/vim-clang'
+"Plug 'justmao945/vim-clang'
 Plug 'lyuts/vim-rtags'
 "Plug 'vim-scripts/CCTree'
-Plug 'jeetsukumaran/vim-buffergator'
+"Plug 'jeetsukumaran/vim-buffergator'
 Plug 'chrisbra/csv.vim'
 Plug 'tpope/vim-vinegar'
 Plug 'rhysd/vim-clang-format'
 "Plug 'bbchung/clighter'
 Plug 'jiangmiao/auto-pairs'
+"Plug 'WolfgangMehner/c-support'
 
 if g:os != "Cygwin"
-  "Plug 'Valloric/YouCompleteMe', { 'do': './install.py --clang-completer' }
+  Plug 'Valloric/YouCompleteMe', { 'do': './install.py --clang-completer' }
   "Plug 'rdnetto/YCM-Generator', { 'branch': 'stable'}
   "Plug 'jeaye/color_coded', { 'do': './configure && make'}
 endif
@@ -248,6 +250,10 @@ map <C-k> <C-W>k
 map <C-h> <C-W>h
 map <C-l> <C-W>l
 
+map <S-k> :resize +5<CR>
+map <S-j> :resize -5<CR>
+map <S-l> :vertical resize +5<CR>
+map <S-h> :vertical resize -5<CR>
 map ö :bnext<CR>
 map ä :bprev<CR>
 map å <C-]>
@@ -379,9 +385,6 @@ let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 0
 let g:syntastic_check_on_wq = 0
 
-" Don't ask about loading .ycm_confirm_extra_conf.py
-let g:ycm_confirm_extra_conf = 1
-
 " Clang format integration
 autocmd FileType c,cpp,objc nnoremap <buffer><Leader>cf :<C-u>ClangFormat<CR>
 autocmd FileType c,cpp,objc vnoremap <buffer><Leader>cf :ClangFormat<CR>
@@ -391,6 +394,16 @@ let g:clang_format#auto_format_on_insert_leave = 1
 
 " Disable vim-clang format since we use vim-clang-format plugin
 let g:clang_enable_format_command = 0
+
+" Detect indent
+autocmd BufReadPost * :DetectIndent
+let g:detectindent_preferred_expandtab = 1
+let g:detectindent_preferred_indent = 4
+
+let g:ycm_global_ycm_extra_conf = '~/.ycm_extra_conf.py'
+
+" Fix problem with å in insert mode
+let g:AutoPairsShortcutFastWrap=''
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => My commands
@@ -415,4 +428,13 @@ command! Conflict call _conflict(@%)
 for f in split($ADDITIONAL_VIMRCS)
     exe 'source' f
 endfor
+
+fun! <SID>StripTrailingWhitespaces()
+  let l = line(".")
+  let c = col(".")
+  %s/\s\+$//e
+  call cursor(l, c)
+endfun
+
+autocmd FileType * autocmd BufWritePre <buffer> :call <SID>StripTrailingWhitespaces()
 

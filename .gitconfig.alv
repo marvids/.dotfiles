@@ -41,3 +41,5 @@
 	tool = vimdiff
 [status]
 	submoduleSummary = true
+[mergetool "fugitive"]
+	cmd = vim -f -c \"Gvdiff\" \"$MERGED\"
