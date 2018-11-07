@@ -76,13 +76,19 @@ Plug 'chrisbra/csv.vim'
 Plug 'tpope/vim-vinegar'
 Plug 'rhysd/vim-clang-format'
 "Plug 'bbchung/clighter'
-Plug 'jiangmiao/auto-pairs'
+"Plug 'jiangmiao/auto-pairs'
 "Plug 'WolfgangMehner/c-support'
+Plug 'alepez/vim-gtest'
+"Plug 'ciaranm/googletest-syntax'
+"Plug 'vim-jp/vim-cpp'
+Plug 'drmikehenry/vim-headerguard'
 
 if g:os != "Cygwin"
   Plug 'Valloric/YouCompleteMe', { 'do': './install.py --clang-completer' }
   "Plug 'rdnetto/YCM-Generator', { 'branch': 'stable'}
   "Plug 'jeaye/color_coded', { 'do': './configure && make'}
+  Plug 'Shougo/vimproc.vim', {'do' : 'make'}
+  Plug 'idanarye/vim-vebugger'
 endif
 
 call plug#end()
@@ -389,8 +395,11 @@ let g:syntastic_check_on_wq = 0
 autocmd FileType c,cpp,objc nnoremap <buffer><Leader>cf :<C-u>ClangFormat<CR>
 autocmd FileType c,cpp,objc vnoremap <buffer><Leader>cf :ClangFormat<CR>
 
+" YouCompleteMe mappings
+autocmd FileType c,cpp,objc vnoremap <buffer><Leader>f :YcmCompleter FixIt<CR>
+
 " Format inserted lines after leaving insert mode
-let g:clang_format#auto_format_on_insert_leave = 1
+" let g:clang_format#auto_format_on_insert_leave = 1
 
 " Disable vim-clang format since we use vim-clang-format plugin
 let g:clang_enable_format_command = 0
@@ -401,9 +410,17 @@ let g:detectindent_preferred_expandtab = 1
 let g:detectindent_preferred_indent = 4
 
 let g:ycm_global_ycm_extra_conf = '~/.ycm_extra_conf.py'
+let g:ycm_autoclose_preview_window_after_completion = 1
 
 " Fix problem with å in insert mode
 let g:AutoPairsShortcutFastWrap=''
+
+" Ctrl-p
+let g:ctrlp_custom_ignore = {
+      \ 'dir': 'html$',
+      \ 'file': '\v\.(html|pdf)$',
+      \ }
+let g:ctrlp_by_filename = 1
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => My commands

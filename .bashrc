@@ -23,12 +23,13 @@ man() {
     man "$@"
 }
 
-export TERM=screen-256color
+export TERM=xterm-256color
 export WORKON_HOME=~/.virtualenvs
 export VIRTUAL_ENV_DISABLE_PROMPT=True
 export PROMPT_COMMAND='history -a;'
 export VISUAL=vim
 export EDITOR="$VISUAL"
+export PATH=$PATH:$HOME/.local/bin
 
 # Bash history settings
 export HISTFILESIZE=1000000
@@ -39,6 +40,11 @@ export HISTTIMEFORMAT='%F %T '
 
 # Append to bash_history instead of overwriting
 shopt -s histappend
+
+# Substitute a string in all checked-in files
+git-substr() {
+    git grep -l "$1" | xargs sed -bi "s/$1/$2/g"
+}
 
 for file in ~/.bash.d/*; do
     if [[ -f $file ]] && [[ $(basename "$file") =~ ^[0-9]{2}-.* ]] ; then

@@ -1,6 +1,6 @@
 [user]
 	name = Mikael Arvids
-	email = mikael.arvids@autoliv.com
+	email = mikael.arvids@veoneer.com
 [color]
 	ui = auto
 [alias]
@@ -16,9 +16,14 @@
 	cp = cherry-pick
 	d = difftool
 	alias = config --get-regexp alias
+	strip-format = "!f() { \
+		git -c diff.sourcefile.textconv='process_source.sh -f' $@; \
+		}; f"
+	strip-comments = "!f() { \
+		git -c diff.sourcefile.textconv='process_source.sh -f -c' $@; \
+		}; f"
 [push]
 	default = simple
-	followTags = true
 [fetch]
 	recurseSubmodules = on-demand
 [core]
@@ -29,16 +34,17 @@
 	fscache = true
 	whitespace = blank-at-eol,space-before-tab,blank-at-eof,cr-at-eol,tab-in-indent
 	eol = crlf
+	attributesfile = /home/mikael.arvids/.gitattributes
 [gc]
 	auto = 256
 [diff]
 	submodule = log
-	tool = vimdiff
+	tool = nvim -d
 [difftool]
 	prompt = false
 [merge]
 	conflictstyle = diff3
-	tool = vimdiff
+	tool = nvim -d
 [status]
 	submoduleSummary = true
 [mergetool "fugitive"]
