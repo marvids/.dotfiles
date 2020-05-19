@@ -20,12 +20,10 @@ let g:mapleader = ","
 
 " :W sudo saves the file
 " (useful for handling the permission-denied error)
-command! W w !sudo tee % > /dev/null
+command! Sudow w !sudo tee % > /dev/null
 
 " Enable filetype plugins
 filetype plugin indent on
-
-set rtp+=~/.vim " Needed for gvim on windows
 
 " Source any .vimrc in the current directory
 set exrc
@@ -38,61 +36,62 @@ let g:os = split(system('uname -o'))[0]
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Plug
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" w0rp/ale settings
+let g:ale_set_balloons = 1
+let g:ale_completion_enabled = 1
+set omnifunc=ale#completion#OmniFunc
+
 call plug#begin('~/.vim/plugged')
 
-Plug 'kien/ctrlp.vim'
-Plug 'gregsexton/gitv'
+Plug 'tpope/vim-vinegar'
+Plug 'tpope/vim-commentary'
+Plug 'tpope/vim-unimpaired'
+Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-surround'
+"Plug 'tpope/vim-dispatch'
+
+Plug 'dhruvasagar/vim-table-mode'
+Plug 'troydm/easytree.vim'
 Plug 'sjl/gundo.vim', { 'on': 'GundoToggle' }
-Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
-Plug 'scrooloose/syntastic'
+"Plug 'scrooloose/syntastic'
 Plug 'majutsushi/tagbar'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'MattesGroeger/vim-bookmarks'
-Plug 'dkprice/vim-easygrep'
-Plug 'tpope/vim-fugitive'
-Plug 'tpope/vim-dispatch'
-Plug 'altercation/vim-colors-solarized'
+Plug 'lifepillar/vim-solarized8'
 Plug 'vimwiki/vimwiki'
-Plug 'mattn/calendar-vim'
 "Plug 'mhinz/vim-signify'
 Plug 'airblade/vim-gitgutter'
 Plug 'ciaranm/detectindent'
-Plug 'tpope/vim-surround'
-Plug 'SirVer/ultisnips'
-Plug 'honza/vim-snippets'
-Plug 'othree/xml.vim'
-Plug 'm42e/arxml.vim', { 'for': 'arxml' }
-Plug 'stephpy/vim-yaml', { 'for': 'yaml' }
+"Plug 'SirVer/ultisnips'
+"Plug 'honza/vim-snippets'
+"Plug 'othree/xml.vim'
+"Plug 'm42e/arxml.vim', { 'for': 'arxml' }
+"Plug 'stephpy/vim-yaml', { 'for': 'yaml' }
 Plug 'edkolev/tmuxline.vim'
-Plug 'vim-scripts/DrawIt'
+"Plug 'vim-scripts/DrawIt'
 "Plug 'davidhalter/jedi-vim'
 "Plug 'klen/python-mode'
 "Plug 'justmao945/vim-clang'
-Plug 'lyuts/vim-rtags'
+"Plug 'lyuts/vim-rtags'
 "Plug 'vim-scripts/CCTree'
 "Plug 'jeetsukumaran/vim-buffergator'
-Plug 'chrisbra/csv.vim'
-Plug 'tpope/vim-vinegar'
+"Plug 'chrisbra/csv.vim'
 Plug 'rhysd/vim-clang-format'
 "Plug 'bbchung/clighter'
 "Plug 'jiangmiao/auto-pairs'
 "Plug 'WolfgangMehner/c-support'
-Plug 'alepez/vim-gtest'
+"Plug 'alepez/vim-gtest'
 "Plug 'ciaranm/googletest-syntax'
 "Plug 'vim-jp/vim-cpp'
-Plug 'drmikehenry/vim-headerguard'
-
-if g:os != "Cygwin"
-  Plug 'Valloric/YouCompleteMe', { 'do': './install.py --clang-completer' }
-  "Plug 'rdnetto/YCM-Generator', { 'branch': 'stable'}
-  "Plug 'jeaye/color_coded', { 'do': './configure && make'}
-  Plug 'Shougo/vimproc.vim', {'do' : 'make'}
-  Plug 'idanarye/vim-vebugger'
-endif
+"Plug 'drmikehenry/vim-headerguard'
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf.vim'
+Plug 'w0rp/ale'
+Plug 'gauteh/vim-cppman'
+"Plug 'ervandew/supertab'
 
 call plug#end()
-
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => VIM user interface
@@ -118,7 +117,7 @@ set ruler
 set cmdheight=2
 
 " A buffer becomes hidden when it is abandoned
-set hid
+set hidden
 
 " Configure backspace so it acts as it should act
 set backspace=eol,start,indent
@@ -144,6 +143,7 @@ set magic
 
 " Show matching brackets when text indicator is over them
 set showmatch
+
 " How many tenths of a second to blink when matching brackets
 set mat=2
 
@@ -170,40 +170,21 @@ set splitbelow
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Colors and Fonts
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Enable syntax highlighting
-syntax enable
-
-let &background = "dark"
-
-try
-
-    if $THEME == "solarized"
-      colorscheme solarized
-      let g:solarized_termcolors=256
-      let g:solarized_termtrans=1
-      let g:airline_theme = 'base16'
-
-      highlight BookmarkSign ctermbg=235
-      highlight BookmarkAnnotationSign ctermbg=235
-      highlight SignColumn ctermbg=235 guibg=black
-    elseif $THEME == "gotham"
-      colorscheme gotham256
-      let g:airline_theme = 'gotham256'
-      highlight SignColumn ctermbg=233 guibg=black
-    endif
-catch
-endtry
-
+let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
 set t_Co=256
+set termguicolors
 
-" Set extra options when running in GUI mode
-if has("gui_running")
-    set guioptions-=m
-    set guioptions-=T
-    set guioptions-=e
-    set guitablabel=%M\ %t
-    set guifont=DejaVu_Sans_Mono_for_Powerline:h8:cANSI
-endif
+" Enable syntax highlighting
+syntax on
+set background=dark
+
+colorscheme solarized8
+let g:airline_theme = 'base16'
+
+highlight BookmarkSign ctermbg=0 guibg=#073642
+highlight BookmarkAnnotationSign ctermbg=0 guibg=#073642
+highlight SignColumn ctermbg=0 guibg=#073642
 
 " Set utf8 as standard encoding and en_US as the standard language
 set encoding=utf8
@@ -225,9 +206,7 @@ set undofile
 set undodir=~/.vim/tmp/undo/
 
 " Put the viminfo file in .vim
-if !has('nvim')
-  set viminfo+=n~/.vim/tmp/viminfo
-endif
+set viminfo+=n~/.vim/tmp/viminfo
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -256,13 +235,14 @@ map <C-k> <C-W>k
 map <C-h> <C-W>h
 map <C-l> <C-W>l
 
-map <S-k> :resize +5<CR>
-map <S-j> :resize -5<CR>
-map <S-l> :vertical resize +5<CR>
-map <S-h> :vertical resize -5<CR>
-map ö :bnext<CR>
-map ä :bprev<CR>
-map å <C-]>
+nnoremap <S-up> :resize +5<CR>
+nnoremap <S-down> :resize -5<CR>
+nnoremap <S-right> :vertical resize +5<CR>
+nnoremap <S-left> :vertical resize -5<CR>
+nnoremap ö :bnext<CR>
+nnoremap ä :bprev<CR>
+nnoremap å <C-]>
+nnoremap Å <C-[>
 
 " Treat long lines as break lines (useful when moving around in them)
 map j gj
@@ -296,15 +276,6 @@ set statusline=\ %F%m%r%h\ %w\ \ CWD:\ %r%{getcwd()}%h\ \ \ Line:\ %l
 " Remap VIM 0 to first non-blank character
 map 0 ^
 
-" Delete trailing white space on save, useful for Python and CoffeeScript ;)
-func! DeleteTrailingWS()
-  exe "normal mz"
-  %s/\s\+$//ge
-  exe "normal `z"
-endfunc
-autocmd BufWrite *.py :call DeleteTrailingWS()
-autocmd BufWrite *.coffee :call DeleteTrailingWS()
-
 " vimdiff mappings
 if &diff
     nmap <A-n> ]cz.
@@ -320,15 +291,6 @@ inoremap <A-j> <Esc>:m .+1<CR>==gi
 inoremap <A-k> <Esc>:m .-2<CR>==gi
 vnoremap <A-j> :m '>+1<CR>gv=gv
 vnoremap <A-k> :m '<-2<CR>gv=gv
-
-" Grep mappings
-:nnoremap gr :grep <cword> *<CR>
-:nnoremap Gr :grep <cword> %:p:h/*<CR>
-:nnoremap gR :grep '\b<cword>\b' *<CR>
-:nnoremap GR :grep '\b<cword>\b' %:p:h/*<CR>
-
-autocmd FileType arxml nmap <leader>d :call FollowShortName()<CR>zv<CR>
-autocmd FileType arxml nmap <leader>g :call FindShortNameReferences()<CR>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Spell checking
@@ -350,14 +312,12 @@ map <leader>s? z=
 noremap <Leader>m mmHmt:%s/<C-V><cr>//ge<cr>'tzt'm
 
 " Make vim recognize alt key
-if !has("nvim")
-  let c='a'
-  while c <= 'z'
-    exec "set <A-".c.">=\e".c
-    exec "imap \e".c." <A-".c.">"
-    let c = nr2char(1+char2nr(c))
-  endw
-endif
+let c='a'
+while c <= 'z'
+  exec "set <A-".c.">=\e".c
+  exec "imap \e".c." <A-".c.">"
+  let c = nr2char(1+char2nr(c))
+endw
 
 set timeout ttimeoutlen=50
 
@@ -367,23 +327,19 @@ hi NonText ctermfg=237 ctermbg=none guifg=#3a3a3a guibg=NONE
 hi SpecialKey ctermfg=237 ctermbg=none guifg=#3a3a3a guibg=NONE
 set list
 
-function! IcaLista()
-  %s/\([0-9][0-9,]*\w*\)Ändra/ \1/g
-endfunction
+" caused problems while hovering when virtual machine was not in focus
+" garbage keystrokes were sent
+"set mouse=a
+"set ttymouse=xterm2
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Plugin settings
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-noremap <F2> :NERDTreeToggle<cr>
 noremap <F3> :TagbarToggle<cr>
 let g:airline_powerline_fonts = 1
 
-let g:UltiSnipsExpandTrigger="<c-h>"
-let g:UltiSnipsJumpForwardTrigger="<c-k>"
-let g:UltiSnipsJumpBackwardTrigger="<c-j>"
-
 set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
+"set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
 
 let g:syntastic_always_populate_loc_list = 1
@@ -394,9 +350,6 @@ let g:syntastic_check_on_wq = 0
 " Clang format integration
 autocmd FileType c,cpp,objc nnoremap <buffer><Leader>cf :<C-u>ClangFormat<CR>
 autocmd FileType c,cpp,objc vnoremap <buffer><Leader>cf :ClangFormat<CR>
-
-" YouCompleteMe mappings
-autocmd FileType c,cpp,objc vnoremap <buffer><Leader>f :YcmCompleter FixIt<CR>
 
 " Format inserted lines after leaving insert mode
 " let g:clang_format#auto_format_on_insert_leave = 1
@@ -409,18 +362,61 @@ autocmd BufReadPost * :DetectIndent
 let g:detectindent_preferred_expandtab = 1
 let g:detectindent_preferred_indent = 4
 
-let g:ycm_global_ycm_extra_conf = '~/.ycm_extra_conf.py'
-let g:ycm_autoclose_preview_window_after_completion = 1
-
 " Fix problem with å in insert mode
 let g:AutoPairsShortcutFastWrap=''
 
-" Ctrl-p
-let g:ctrlp_custom_ignore = {
-      \ 'dir': 'html$',
-      \ 'file': '\v\.(html|pdf)$',
-      \ }
-let g:ctrlp_by_filename = 1
+let g:fzf_command_prefix = 'Fzf'
+
+noremap <C-g> :FzfRg<CR>
+noremap <leader>g :FzfRg \b<c-r><c-w>\b<CR>
+noremap <leader>gg :Ggrep <c-r><c-w><CR>:copen<CR>
+noremap <C-p> :FzfGitFiles<CR>
+noremap <C-f> :FzfFiles .<CR>
+
+" vim-cppman adds : to iskeyword. Remove it
+set iskeyword-=:
+set iskeyword-==
+set iskeyword-=~
+set iskeyword-=[
+set iskeyword-=]
+set iskeyword-=*
+set iskeyword-=<
+set iskeyword-=>
+
+" ale
+noremap <leader>rr :ALEFindReferences<CR>
+noremap <leader>rd :ALEGoToDefinition<CR>
+noremap <leader>ri :ALEHover<CR>
+noremap <leader>rn :ALERename<CR>
+noremap <leader>rf :call ClangFixLine()<CR>
+
+let g:ale_cpp_clangtidy_checks = [
+            \ 'bugprone*',
+            \ 'cppcoreguidelines*',
+            \ 'clang-analyzer*',
+            \ 'misc*',
+            \ 'modernize*',
+            \ 'performance*',
+            \ 'portability*',
+            \ 'readability*',
+            \ ]
+let g:ale_c_parse_compile_commands=1
+let g:ale_c_clangd_executable='/usr/local/clang-9.0.0/bin/clangd'
+let g:ale_cpp_clangd_executable='/usr/local/clang-9.0.0/bin/clangd'
+let g:ale_cpp_clangcheck_executable='/usr/local/clang-9.0.0/bin/clang-check'
+let g:ale_cpp_clangtidy_executable='/usr/local/clang-9.0.0/bin/clang-tidy'
+let g:ale_c_clangd_options='--background-index --clang-tidy --clang-tidy-checks='.join(g:ale_cpp_clangtidy_checks, ',')
+let g:ale_cpp_clangd_options='--background-index --clang-tidy --clang-tidy-checks='.join(g:ale_cpp_clangtidy_checks, ',')
+
+let g:ale_linters={
+            \ 'cpp': ['clangd'],
+            \ 'c': ['clangd']
+            \}
+
+let g:ale_fixers={
+            \ 'cpp': ['clangtidy'],
+            \ 'c': ['clangtidy']
+            \}
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => My commands
@@ -453,5 +449,9 @@ fun! <SID>StripTrailingWhitespaces()
   call cursor(l, c)
 endfun
 
-autocmd FileType * autocmd BufWritePre <buffer> :call <SID>StripTrailingWhitespaces()
-
+augroup fileautomation
+  autocmd FileType * autocmd BufWritePre <buffer> :call <SID>StripTrailingWhitespaces()
+  autocmd BufEnter index.wiki :VimwikiTOC
+  autocmd BufEnter index.wiki :VimwikiGenerateLinks
+  autocmd BufEnter diary.wiki :VimwikiDiaryGenerateLinks
+augroup end

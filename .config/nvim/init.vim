@@ -1,78 +1,52 @@
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => General
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-let mapleader = ","
-let g:mapleader = ","
-set guicursor=
-
-" :W sudo saves the file
-" (useful for handling the permission-denied error)
-command! WW w !sudo tee % > /dev/null
-
 " Run checktime in buffers, but avoiding the "Command Line" (q:) window
 au CursorHold * if getcmdwintype() == '' | checktime | endif
 
+" With a map leader it's possible to do extra key combinations
+" like <leader>w saves the current file
+let mapleader = ","
+let g:mapleader = ","
+
+" :Sudow sudo saves the file
+" (useful for handling the permission-denied error)
+command! Sudow w !sudo tee % > /dev/null
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Plug
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-call plug#begin('~/.local/share/nvim/site/pack/plugged')
+" Add the dein installation directory into runtimepath
+set runtimepath+=~/.cache/dein/repos/github.com/Shougo/dein.vim
 
-Plug 'Shougo/neoyank.vim'
-Plug 'Shougo/denite.nvim'
-Plug 'himanoa/denite-git-grep'
-Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-Plug 'zchee/deoplete-clang'
-Plug 'Shougo/neoinclude.vim'
-Plug 'neomake/neomake'
-Plug 'sjl/gundo.vim'
-Plug 'troydm/easytree.vim'
-Plug 'majutsushi/tagbar'
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
-Plug 'MattesGroeger/vim-bookmarks'
-Plug 'tpope/vim-dispatch'
-Plug 'tpope/vim-sleuth'
-Plug 'altercation/vim-colors-solarized'
-Plug 'vimwiki/vimwiki'
-Plug 'airblade/vim-gitgutter'
-Plug 'edkolev/tmuxline.vim'
-Plug 'lyuts/vim-rtags'
-Plug 'rhysd/vim-clang-format'
-Plug 'sbdchd/neoformat'
-Plug 'davidhalter/jedi-vim'
-Plug 'tpope/vim-commentary'
-Plug 'tpope/vim-fugitive'
+if dein#load_state('~/.cache/dein')
+  call dein#begin('~/.cache/dein')
 
-"Plug 'Rip-Rip/clang_complete'
-"Plug 'roxma/nvim-completion-manager'
-"Plug 'roxma/ncm-clang'
-"Plug 'kien/ctrlp.vim'
-"Plug 'gregsexton/gitv'
-"Plug 'scrooloose/syntastic'
-"Plug 'dkprice/vim-easygrep'
-"Plug 'radenling/vim-dispatch-neovim'
-"Plug 'mattn/calendar-vim'
-"Plug 'mhinz/vim-signify'
-"Plug 'tpope/vim-surround'
-"Plug 'SirVer/ultisnips'
-"Plug 'honza/vim-snippets'
-"Plug 'othree/xml.vim'
-"Plug 'm42e/arxml.vim', { 'for': 'arxml' }
-"Plug 'stephpy/vim-yaml', { 'for': 'yaml' }
-"Plug 'vim-scripts/DrawIt'
-"Plug 'klen/python-mode'
-"Plug 'justmao945/vim-clang'
-"Plug 'marxin/neo-rtags'
-"Plug 'vim-scripts/CCTree'
-"Plug 'jeetsukumaran/vim-buffergator'
-"Plug 'chrisbra/csv.vim'
-"Plug 'tpope/vim-vinegar'
-"Plug 'bbchung/clighter'
-"Plug 'jiangmiao/auto-pairs'
-"Plug 'WolfgangMehner/c-support'
+  call dein#add('Shougo/dein.vim')
+  call dein#add('Shougo/deoplete.nvim')
+  call dein#add('deoplete-plugins/deoplete-jedi')
 
-call plug#end()
+  call dein#add('vim-airline/vim-airline')
+  call dein#add('vim-airline/vim-airline-themes')
+  call dein#add('lifepillar/vim-solarized8')
+  call dein#add('edkolev/tmuxline.vim')
+
+  call dein#add('nestorsalceda/vim-strip-trailing-whitespaces')
+  call dein#add('dense-analysis/ale')
+
+  call dein#add('junegunn/fzf.vim')
+  set rtp+=~/.fzf
+
+  call dein#add('chrisbra/csv.vim')
+  call dein#add('ciaranm/detectindent')
+  call dein#add('tpope/vim-fugitive')
+  call dein#add('troydm/easytree.vim')
+  call dein#add('sbdchd/neoformat')
+  call dein#add('dhruvasagar/vim-table-mode')
+
+  call dein#end()
+  call dein#save_state()
+endif
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -81,22 +55,15 @@ call plug#end()
 " Set 7 lines to the cursor - when moving vertically using j/k
 set so=7
 
-" Turn on the WiLd menu
-set wildmenu
-
 " Ignore compiled files
 set wildignore=*.o,*~,*.pyc
-if has("win16") || has("win32")
-    set wildignore+=*/.git/*,*/.hg/*,*/.svn/*,*/.DS_Store
-else
-    set wildignore+=.git\*,.hg\*,.svn\*
-endif
+set wildignore+=.git\*,.hg\*,.svn\*
 
 " Height of the command bar
 set cmdheight=2
 
 " A buffer becomes hidden when it is abandoned
-set hid
+set hidden
 
 " Ignore case when searching
 set ignorecase
@@ -104,8 +71,18 @@ set ignorecase
 " When searching try to be smart about cases
 set smartcase
 
-" Show incremental commands (like substitue) as you type
-set inccommand=nosplit
+" Don't redraw while executing macros (good performance config)
+set lazyredraw
+
+" For regular expressions turn magic on
+set magic
+
+" Show matching brackets when text indicator is over them
+set showmatch
+
+" How many tenths of a second to blink when matching brackets
+set mat=2
+
 " Show line numbers
 set number
 
@@ -113,21 +90,31 @@ set number
 set splitright
 set splitbelow
 
+" Format the status line
+set statusline=\ %F%m%r%h\ %w\ \ CWD:\ %r%{getcwd()}%h\ \ \ Line:\ %l
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Theme
+" => Colors and Fonts
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-let &background = "dark"
+set termguicolors
 
-colorscheme solarized
-let g:solarized_termcolors=256
-let g:solarized_termtrans=1
+colorscheme solarized8
 let g:airline_theme = 'base16'
+let g:airline_powerline_fonts = 1
 
-highlight BookmarkSign ctermbg=235
-highlight BookmarkAnnotationSign ctermbg=235
-highlight SignColumn ctermbg=235 guibg=black
+" Set utf8 as standard encoding and en_US as the standard language
+set encoding=utf8
 
+" Use Unix as the standard file type
+set ffs=unix,dos,mac
+
+syntax on
+
+" Show whitespace
+set listchars=tab:>-,trail:~,extends:>,precedes:<
+hi NonText ctermfg=237 ctermbg=none guifg=#3a3a3a guibg=NONE
+hi SpecialKey ctermfg=237 ctermbg=none guifg=#3a3a3a guibg=NONE
+set list
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Text, tab and indent related
@@ -135,9 +122,16 @@ highlight SignColumn ctermbg=235 guibg=black
 " Use spaces instead of tabs
 set expandtab
 
+" Be smart when using tabs ;)
+set smarttab
+
 " 1 tab == 4 spaces
 set shiftwidth=4
 set tabstop=4
+
+set ai "Auto indent
+set si "Smart indent
+set wrap "Wrap lines
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Moving around, tabs, windows and buffers
@@ -147,13 +141,14 @@ map <C-k> <C-W>k
 map <C-h> <C-W>h
 map <C-l> <C-W>l
 
-map <S-k> :resize +5<CR>
-map <S-j> :resize -5<CR>
-map <S-l> :vertical resize +5<CR>
-map <S-h> :vertical resize -5<CR>
-map ö :bnext<CR>
-map ä :bprev<CR>
-map å <C-]>
+nnoremap <S-up> :resize +5<CR>
+nnoremap <S-down> :resize -5<CR>
+nnoremap <S-right> :vertical resize +5<CR>
+nnoremap <S-left> :vertical resize -5<CR>
+nnoremap ö :bnext<CR>
+nnoremap ä :bprev<CR>
+nnoremap å <C-]>
+nnoremap Å <C-[>
 
 " Treat long lines as break lines (useful when moving around in them)
 map j gj
@@ -162,17 +157,17 @@ map k gk
 " Disable highlight when <leader><cr> is pressed
 map <silent> <leader><cr> :noh<cr>
 
-" Return to last edit position when opening files (You want this!)
-autocmd BufReadPost *
-     \ if line("'\"") > 0 && line("'\"") <= line("$") |
-     \ exe "normal! g`\"" |
-     \ endif
-
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Editing mappings
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Remap VIM 0 to first non-blank character
 map 0 ^
+
+" vimdiff mappings
+if &diff
+    nmap <A-n> ]cz.
+    nmap <A-p> [cz.
+endif
 
 " § to ~
 map § ~
@@ -184,116 +179,89 @@ inoremap <A-k> <Esc>:m .-2<CR>==gi
 vnoremap <A-j> :m '>+1<CR>gv=gv
 vnoremap <A-k> :m '<-2<CR>gv=gv
 
-" Quick replace of word under cursor
-nnoremap <leader>s :%s/\<<C-r><C-w>\>/
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Spell checking
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Pressing ,ss will toggle and untoggle spell checking
-map <leader>ss :setlocal spell!<cr>
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Misc
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Show whitespace
-set listchars=tab:>-,trail:~,extends:>,precedes:<
-hi NonText ctermfg=237 ctermbg=none guifg=#3a3a3a guibg=NONE
-hi SpecialKey ctermfg=237 ctermbg=none guifg=#3a3a3a guibg=NONE
-set list
-
-function! IcaLista()
-  %s/\([0-9][0-9,]*\w*\)Ändra/ \1/g
-endfunction
-
-" Enable undofile
-set undofile
-set undodir=~/.vim/tmp/undo/
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Plugin settings
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-noremap <F2> :EasyTreeToggle<cr>
-noremap <F3> :TagbarToggle<cr>
-let g:airline_powerline_fonts = 1
 
-
-" Clang format integration
-autocmd FileType c,cpp,objc nnoremap <buffer><Leader>cf :<C-u>ClangFormat<CR>
-autocmd FileType c,cpp,objc vnoremap <buffer><Leader>cf :ClangFormat<CR>
-
-" Format inserted lines after leaving insert mode
-"let g:clang_format#auto_format_on_insert_leave = 1
-
-" When writing a buffer, and on normal mode changes (after 750ms).
-call neomake#configure#automake('nw', 750)
-
-fun! <SID>StripTrailingWhitespaces()
-  let l = line(".")
-  let c = col(".")
-  %s/\s\+$//e
-  call cursor(l, c)
-endfun
-
-autocmd FileType * autocmd BufWritePre <buffer> :call <SID>StripTrailingWhitespaces()
-
-fun! <SID>GitClangFormat()
-    let l = line(".")
-    let c = col(".")
-    :w %
-    silent !git-clang-format -f %
-    :e! %
-    call cursor(l, c)
-endfun
-"autocmd FileType c,cpp,objc autocmd BufWritePre <buffer> :call <SID>GitClangFormat()
-
-" Denite
-nnoremap <C-p> :DeniteProjectDir file_rec<cr>
-nnoremap <C-g> :DeniteProjectDir -buffer-name=grep -default-action=quickfix grep:::!<CR>
-nnoremap <leader>g :DeniteCursorWord grep:.<CR>
-
-call denite#custom#map(
-   \ 'insert',
-   \ '<C-j>',
-   \ '<denite:move_to_next_line>',
-   \ 'noremap'
-   \)
-call denite#custom#map(
-   \ 'insert',
-   \ '<C-k>',
-   \ '<denite:move_to_previous_line>',
-   \ 'noremap'
-   \)
-
-call denite#custom#var('file_rec', 'command',
-    \ ['ag', '--path-to-agignore', '~/.agignore', '--follow', '--nocolor', '--nogroup', '-g', ''])
-
-call denite#custom#source(
-\ 'grep', 'matchers', ['matcher_regexp'])
-
-" Ag command on grep source
-call denite#custom#var('grep', 'command', ['ag'])
-call denite#custom#var('grep', 'default_opts',
-    \ ['-i', '--vimgrep'])
-call denite#custom#var('grep', 'recursive_opts', [])
-call denite#custom#var('grep', 'pattern_opt', [])
-call denite#custom#var('grep', 'separator', ['--'])
-call denite#custom#var('grep', 'final_opts', [])
-
-" Neomake
-let g:neomake_shellcheck_args = ['-fgcc']
-
-"deoplete
+" --- deoplete ---"
 let g:deoplete#enable_at_startup = 1
 
-" deoplete-clang
-let g:deoplete#sources#clang#libclang_path = '/usr/lib/llvm-3.8/lib/libclang.so'
-let g:deoplete#sources#clang#clang_header = '/usr/lib/clang/3.8/include/'
+" --- ale ---"
+noremap <leader>gr :ALEFindReferences<CR>
+noremap <leader>gd :ALEGoToDefinition<CR>
+noremap <leader>gi :ALEHover<CR>
+noremap <leader>gn :ALERename<CR>
+noremap <leader>gf :call ClangFixLine()<CR>
 
-" RTags
-let g:rtagsAutoLaunchRdm = 1
+let g:ale_cpp_clangtidy_checks = [
+      \ 'bugprone*',
+      \ 'cppcoreguidelines*',
+      \ 'clang-analyzer*',
+      \ 'misc*',
+      \ 'modernize*',
+      \ 'performance*',
+      \ 'portability*',
+      \ 'readability*',
+      \ '-readability-uppercase-literal-suffix',
+      \ '-modernize-use-trailing-return-type',
+      \ ]
+let g:ale_c_parse_compile_commands=1
+let g:ale_c_clangd_executable='clangd-9'
+let g:ale_cpp_clangd_executable='clangd-9'
+let g:ale_cpp_clangcheck_executable='clang-check-9'
+let g:ale_cpp_clangtidy_executable='clang-tidy-9'
+let g:ale_c_clangd_options='--background-index --clang-tidy --clang-tidy-checks='.join(g:ale_cpp_clangtidy_checks, ',')
+let g:ale_cpp_clangd_options='--background-index --clang-tidy --clang-tidy-checks='.join(g:ale_cpp_clangtidy_checks, ',')
 
+let g:ale_linters={
+      \ 'cpp': ['clangd'],
+      \ 'c': ['clangd']
+      \}
+
+let g:ale_fixers={
+      \ 'cpp': ['clangtidy'],
+      \ 'c': ['clangtidy']
+      \}
+
+let g:ale_sign_warning='❗'
+let g:ale_sign_error='❎'
+let g:ale_sign_info='ℹ'
+let g:ale_sign_style_warning='☢'
+let g:ale_sign_style_error='☢'
+
+" Solarized colors
+highlight ALEInfoSign guifg=#93a1a1
+highlight ALEWarningSign guifg=#b58900
+highlight ALEErrorSign guifg=#dc322f
+highlight ALEStyleWarningSign guifg=#b58900
+highlight ALEStyleErrorSign guifg=#dc322f
+
+function! ClangFixLine()
+    let l:filename = expand('%')
+    let l:line = line('.')
+    let l:cmd = g:ale_cpp_clangtidy_executable . " -fix -fix-errors --line-filter='[{\"name\":\"" . l:filename . "\",\"lines\":[[" . l:line . "," . l:line . "]]}]' --checks=" . join(g:ale_cpp_clangtidy_checks, ',') . " -p " . g:ale_c_build_dir . " " . l:filename
+    execute "!" . l:cmd
+endfunction
+
+" --- fzf ---"
+let g:fzf_command_prefix = 'Fzf'
+noremap <C-g> :FzfRg<CR>
+noremap <leader>ff :FzfRg \b<c-r><c-w>\b<CR>
+noremap <leader>fg :Ggrep <c-r><c-w><CR>:copen<CR>
+noremap <C-p> :FzfGitFiles<CR>
+noremap <C-f> :FzfFiles .<CR>
+noremap <leader>c :FzfCommands<CR>
+
+" --- detectindent ---"
+let g:detectindent_preferred_indent = 4
+autocmd BufReadPost * :DetectIndent
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Misc
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 for f in split($ADDITIONAL_VIMRCS)
     exe 'source' f
 endfor

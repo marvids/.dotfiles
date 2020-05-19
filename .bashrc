@@ -11,6 +11,7 @@ alias t='tmux attach || tmux new'
 alias c='cd ..'
 alias ll='ls -l'
 alias la='ls -al'
+alias ssh='TERM=xterm ssh'
 
 man() {
     env LESS_TERMCAP_mb=$'\E[01;31m' \
@@ -23,7 +24,6 @@ man() {
     man "$@"
 }
 
-export TERM=xterm-256color
 export WORKON_HOME=~/.virtualenvs
 export VIRTUAL_ENV_DISABLE_PROMPT=True
 export PROMPT_COMMAND='history -a;'
@@ -43,7 +43,7 @@ shopt -s histappend
 
 # Substitute a string in all checked-in files
 git-substr() {
-    git grep -l "$1" | xargs sed -bi "s/$1/$2/g"
+    git grep -Il "$1" | xargs sed -bi "s/$1/$2/g"
 }
 
 for file in ~/.bash.d/*; do
@@ -51,3 +51,5 @@ for file in ~/.bash.d/*; do
         source "$file"
     fi
 done
+
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash

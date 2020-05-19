@@ -39,7 +39,7 @@
 	auto = 256
 [diff]
 	submodule = log
-	tool = nvim -d
+	tool = vimdiff
 [difftool]
 	prompt = false
 [merge]
@@ -47,5 +47,11 @@
 	tool = nvim -d
 [status]
 	submoduleSummary = true
-[mergetool "fugitive"]
-	cmd = vim -f -c \"Gvdiff\" \"$MERGED\"
+[mergetool "nvim"]
+  cmd = nvim -f -c \"Gdiffsplit!\" \"$MERGED\"
+# set "nvim" as tool for merging
+[merge]
+  tool = nvim
+# automatically launch merge tool without displaying a prompt
+[mergetool]
+  prompt = false

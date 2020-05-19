@@ -3,7 +3,6 @@
 clear_project() {
     if [[ -n $ACTIVE_PROJECT ]]; then
         local PROJECT="$ACTIVE_PROJECT"
-        __get_project "$PROJECT"
 
         if [[ -n $VIRTUALENV_INSTANCE ]]; then
             deactivate
