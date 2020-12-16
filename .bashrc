@@ -38,6 +38,8 @@ export HISTCONTROL=ignorespace
 export HISTIGNORE='ls:history:ll'
 export HISTTIMEFORMAT='%F %T '
 
+export BAT_THEME="Solarized (dark)"
+
 # Append to bash_history instead of overwriting
 shopt -s histappend
 

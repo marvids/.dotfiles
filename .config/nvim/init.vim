@@ -13,6 +13,10 @@ let g:mapleader = ","
 " (useful for handling the permission-denied error)
 command! Sudow w !sudo tee % > /dev/null
 
+if &compatible
+  set nocompatible
+endif
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Plug
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -22,7 +26,7 @@ set runtimepath+=~/.cache/dein/repos/github.com/Shougo/dein.vim
 if dein#load_state('~/.cache/dein')
   call dein#begin('~/.cache/dein')
 
-  call dein#add('Shougo/dein.vim')
+  call dein#add('~/.cache/dein/repos/github.com/Shougo/dein.vim')
   call dein#add('Shougo/deoplete.nvim')
   call dein#add('deoplete-plugins/deoplete-jedi')
 
@@ -43,11 +47,14 @@ if dein#load_state('~/.cache/dein')
   call dein#add('troydm/easytree.vim')
   call dein#add('sbdchd/neoformat')
   call dein#add('dhruvasagar/vim-table-mode')
+  call dein#add('rickhowe/diffchar.vim')
 
   call dein#end()
   call dein#save_state()
 endif
 
+filetype plugin indent on
+syntax enable
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => VIM user interface
@@ -247,9 +254,20 @@ endfunction
 
 " --- fzf ---"
 let g:fzf_command_prefix = 'Fzf'
+
+command! -bang -nargs=* FzfRg
+  \ call fzf#vim#grep(
+  \   'rg --column --line-number --no-heading --color=always --smart-case -- '.shellescape(<q-args>), 1,
+  \   fzf#vim#with_preview({'options': '--delimiter : --nth 4..'}), <bang>0)
+
+command! -bang -nargs=* FzfGGrep
+  \ call fzf#vim#grep(
+  \   'git grep --line-number --color -- '.shellescape(<q-args>), 0,
+  \   fzf#vim#with_preview({'options': '--delimiter : --nth 4..', 'dir': systemlist('git rev-parse --show-toplevel')[0]}), <bang>0)
+
 noremap <C-g> :FzfRg<CR>
 noremap <leader>ff :FzfRg \b<c-r><c-w>\b<CR>
-noremap <leader>fg :Ggrep <c-r><c-w><CR>:copen<CR>
+noremap <leader>fg :FzfGGrep \b<c-r><c-w>\b<CR>
 noremap <C-p> :FzfGitFiles<CR>
 noremap <C-f> :FzfFiles .<CR>
 noremap <leader>c :FzfCommands<CR>
