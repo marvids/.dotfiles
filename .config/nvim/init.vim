@@ -1,11 +1,7 @@
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => General
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Run checktime in buffers, but avoiding the "Command Line" (q:) window
+" General {{{
+" Check if file was changed outside of this editor periodically
 au CursorHold * if getcmdwintype() == '' | checktime | endif
 
-" With a map leader it's possible to do extra key combinations
-" like <leader>w saves the current file
 let mapleader = ","
 let g:mapleader = ","
 
@@ -13,52 +9,38 @@ let g:mapleader = ","
 " (useful for handling the permission-denied error)
 command! Sudow w !sudo tee % > /dev/null
 
-if &compatible
-  set nocompatible
-endif
+" }}}
+" Plugins {{{
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Plug
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Add the dein installation directory into runtimepath
-set runtimepath+=~/.cache/dein/repos/github.com/Shougo/dein.vim
+call plug#begin('~/projects/nvim-test/local/share/nvim/plugged')
+    Plug 'vim-airline/vim-airline'
+    Plug 'vim-airline/vim-airline-themes'
+    Plug 'lifepillar/vim-solarized8'
+    Plug 'edkolev/tmuxline.vim'
 
-if dein#load_state('~/.cache/dein')
-  call dein#begin('~/.cache/dein')
+    Plug 'neovim/nvim-lspconfig'
 
-  call dein#add('~/.cache/dein/repos/github.com/Shougo/dein.vim')
-  call dein#add('Shougo/deoplete.nvim')
-  call dein#add('deoplete-plugins/deoplete-jedi')
+    Plug 'Shougo/deoplete.nvim'
+    Plug 'Shougo/deoplete-lsp'
+    Plug 'deoplete-plugins/deoplete-jedi'
 
-  call dein#add('vim-airline/vim-airline')
-  call dein#add('vim-airline/vim-airline-themes')
-  call dein#add('lifepillar/vim-solarized8')
-  call dein#add('edkolev/tmuxline.vim')
+    Plug 'junegunn/fzf.vim'
+    set rtp+=~/.fzf
 
-  call dein#add('nestorsalceda/vim-strip-trailing-whitespaces')
-  call dein#add('dense-analysis/ale')
-
-  call dein#add('junegunn/fzf.vim')
-  set rtp+=~/.fzf
-
-  call dein#add('chrisbra/csv.vim')
-  call dein#add('ciaranm/detectindent')
-  call dein#add('tpope/vim-fugitive')
-  call dein#add('troydm/easytree.vim')
-  call dein#add('sbdchd/neoformat')
-  call dein#add('dhruvasagar/vim-table-mode')
-  call dein#add('rickhowe/diffchar.vim')
-
-  call dein#end()
-  call dein#save_state()
-endif
+    Plug 'ciaranm/detectindent'
+    Plug 'ojroques/nvim-lspfuzzy'
+    Plug 'nestorsalceda/vim-strip-trailing-whitespaces'
+    Plug 'tpope/vim-fugitive'
+    Plug 'troydm/easytree.vim'
+    Plug 'rickhowe/diffchar.vim'
+call plug#end()
 
 filetype plugin indent on
 syntax enable
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => VIM user interface
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" }}}
+" Uset interface {{{
+
 " Set 7 lines to the cursor - when moving vertically using j/k
 set so=7
 
@@ -84,6 +66,12 @@ set lazyredraw
 " For regular expressions turn magic on
 set magic
 
+" Open new splits to the right
+set splitright
+set splitbelow
+
+" }}}
+" Appearance {{{
 " Show matching brackets when text indicator is over them
 set showmatch
 
@@ -92,17 +80,9 @@ set mat=2
 
 " Show line numbers
 set number
-
-" Open new splits to the right
-set splitright
-set splitbelow
-
 " Format the status line
 set statusline=\ %F%m%r%h\ %w\ \ CWD:\ %r%{getcwd()}%h\ \ \ Line:\ %l
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Colors and Fonts
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 set termguicolors
 
 colorscheme solarized8
@@ -123,9 +103,8 @@ hi NonText ctermfg=237 ctermbg=none guifg=#3a3a3a guibg=NONE
 hi SpecialKey ctermfg=237 ctermbg=none guifg=#3a3a3a guibg=NONE
 set list
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Text, tab and indent related
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" }}}
+" Indentation {{{
 " Use spaces instead of tabs
 set expandtab
 
@@ -139,19 +118,21 @@ set tabstop=4
 set ai "Auto indent
 set si "Smart indent
 set wrap "Wrap lines
+" }}}
+" Mappings {{{
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Moving around, tabs, windows and buffers
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Move quickly between splits
 map <C-j> <C-W>j
 map <C-k> <C-W>k
 map <C-h> <C-W>h
 map <C-l> <C-W>l
 
+" Quick resize
 nnoremap <S-up> :resize +5<CR>
 nnoremap <S-down> :resize -5<CR>
 nnoremap <S-right> :vertical resize +5<CR>
 nnoremap <S-left> :vertical resize -5<CR>
+
 nnoremap ö :bnext<CR>
 nnoremap ä :bprev<CR>
 nnoremap å <C-]>
@@ -163,10 +144,6 @@ map k gk
 
 " Disable highlight when <leader><cr> is pressed
 map <silent> <leader><cr> :noh<cr>
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Editing mappings
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Remap VIM 0 to first non-blank character
 map 0 ^
 
@@ -179,6 +156,7 @@ endif
 " § to ~
 map § ~
 
+" Move lines up and down
 nnoremap <A-j> :m .+1<CR>==
 nnoremap <A-k> :m .-2<CR>==
 inoremap <A-j> <Esc>:m .+1<CR>==gi
@@ -186,73 +164,67 @@ inoremap <A-k> <Esc>:m .-2<CR>==gi
 vnoremap <A-j> :m '>+1<CR>gv=gv
 vnoremap <A-k> :m '<-2<CR>gv=gv
 
-
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Plugin settings
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
-" --- deoplete ---"
+" }}}
+" Plugin Settings {{{
+" deoplete {{{
 let g:deoplete#enable_at_startup = 1
+" }}}
+" nvim-lsp {{{
+lua <<EOF
+require'lspconfig'.clangd.setup{
+    cmd = { "clangd-10", "--background-index", "--clang-tidy"}
+}
+require('lspfuzzy').setup {}
+EOF
 
-" --- ale ---"
-noremap <leader>gr :ALEFindReferences<CR>
-noremap <leader>gd :ALEGoToDefinition<CR>
-noremap <leader>gi :ALEHover<CR>
-noremap <leader>gn :ALERename<CR>
-noremap <leader>gf :call ClangFixLine()<CR>
+lua << EOF
 
-let g:ale_cpp_clangtidy_checks = [
-      \ 'bugprone*',
-      \ 'cppcoreguidelines*',
-      \ 'clang-analyzer*',
-      \ 'misc*',
-      \ 'modernize*',
-      \ 'performance*',
-      \ 'portability*',
-      \ 'readability*',
-      \ '-readability-uppercase-literal-suffix',
-      \ '-modernize-use-trailing-return-type',
-      \ ]
-let g:ale_c_parse_compile_commands=1
-let g:ale_c_clangd_executable='clangd-9'
-let g:ale_cpp_clangd_executable='clangd-9'
-let g:ale_cpp_clangcheck_executable='clang-check-9'
-let g:ale_cpp_clangtidy_executable='clang-tidy-9'
-let g:ale_c_clangd_options='--background-index --clang-tidy --clang-tidy-checks='.join(g:ale_cpp_clangtidy_checks, ',')
-let g:ale_cpp_clangd_options='--background-index --clang-tidy --clang-tidy-checks='.join(g:ale_cpp_clangtidy_checks, ',')
+vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
+  vim.lsp.diagnostic.on_publish_diagnostics, {
+    virtual_text = false,
+    signs = true,
+    update_in_insert = true,
+  }
+)
 
-let g:ale_linters={
-      \ 'cpp': ['clangd'],
-      \ 'c': ['clangd']
-      \}
+EOF
+"highlight LspDiagnosticsDefaultInformation guifg=#404040
+highlight LspDiagnosticsSignInformation guifg=#268bd2
+"highlight LspDiagnosticsDefaultWarning guifg=#404040
+highlight LspDiagnosticsSignWarning guifg=#b58900
+"highlight LspDiagnosticsDefaultError guifg=#404040
+highlight LspDiagnosticsSignError guifg=#dc322f
 
-let g:ale_fixers={
-      \ 'cpp': ['clangtidy'],
-      \ 'c': ['clangtidy']
-      \}
+sign define LspDiagnosticsSignInformation text=⬤
+sign define LspDiagnosticsSignWarning text=▲
+sign define LspDiagnosticsSignError text=■
 
-let g:ale_sign_warning='❗'
-let g:ale_sign_error='❎'
-let g:ale_sign_info='ℹ'
-let g:ale_sign_style_warning='☢'
-let g:ale_sign_style_error='☢'
+command! CodeFormat lua vim.lsp.buf.formatting()
+command! CodeAction lua vim.lsp.buf.code_action()
+command! CodeDefinition lua vim.lsp.buf.definition()
+command! CodeDeclaration lua vim.lsp.buf.declaration()
+command! CodeHover lua vim.lsp.buf.hover()
+command! CodeImplementation lua vim.lsp.buf.implementation()
+command! CodeSignature lua vim.lsp.buf.signature_help()
+command! CodeType lua vim.lsp.buf.type_definition()
+command! CodeReference lua vim.lsp.buf.references()
+command! CodeDocumentSymbol lua vim.lsp.buf.document_symbol()
+command! CodeWorkspaceSymbol lua vim.lsp.buf.workspace_symbol()
+command! CodeShowDiagnostics lua vim.lsp.diagnostic.show_line_diagnostics()
 
-" Solarized colors
-highlight ALEInfoSign guifg=#93a1a1
-highlight ALEWarningSign guifg=#b58900
-highlight ALEErrorSign guifg=#dc322f
-highlight ALEStyleWarningSign guifg=#b58900
-highlight ALEStyleErrorSign guifg=#dc322f
+noremap gd :CodeDefinition<CR>
+noremap gdd :CodeDeclaration<CR>
+noremap gI :CodeImplementation<CR>
+noremap gr :CodeReference<CR>
+noremap K :CodeHover<CR>
+noremap ca :CodeAction<CR>
+noremap S :CodeSignature<CR>
+noremap T :CodeType<CR>
+noremap cf :CodeFormat<CR>
+noremap cd :CodeShowDiagnostics<CR>
 
-function! ClangFixLine()
-    let l:filename = expand('%')
-    let l:line = line('.')
-    let l:cmd = g:ale_cpp_clangtidy_executable . " -fix -fix-errors --line-filter='[{\"name\":\"" . l:filename . "\",\"lines\":[[" . l:line . "," . l:line . "]]}]' --checks=" . join(g:ale_cpp_clangtidy_checks, ',') . " -p " . g:ale_c_build_dir . " " . l:filename
-    execute "!" . l:cmd
-endfunction
-
-" --- fzf ---"
+" }}}
+" fzf {{{
 let g:fzf_command_prefix = 'Fzf'
 
 command! -bang -nargs=* FzfRg
@@ -272,15 +244,13 @@ noremap <C-p> :FzfGitFiles<CR>
 noremap <C-f> :FzfFiles .<CR>
 noremap <leader>c :FzfCommands<CR>
 
-" --- detectindent ---"
+" }}}
+" detectindent {{{
+"
 let g:detectindent_preferred_indent = 4
 autocmd BufReadPost * :DetectIndent
 
+" }}}
+" }}}
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Misc
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-for f in split($ADDITIONAL_VIMRCS)
-    exe 'source' f
-endfor
-
+" vim:foldmethod=marker:foldlevel=0
