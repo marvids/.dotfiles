@@ -85,7 +85,7 @@ set statusline=\ %F%m%r%h\ %w\ \ CWD:\ %r%{getcwd()}%h\ \ \ Line:\ %l
 
 set termguicolors
 
-colorscheme solarized8
+colorscheme solarized8_flat
 let g:airline_theme = 'base16'
 let g:airline_powerline_fonts = 1
 
@@ -102,6 +102,8 @@ set listchars=tab:>-,trail:~,extends:>,precedes:<
 hi NonText ctermfg=237 ctermbg=none guifg=#3a3a3a guibg=NONE
 hi SpecialKey ctermfg=237 ctermbg=none guifg=#3a3a3a guibg=NONE
 set list
+
+hi! NonText gui=italic
 
 " }}}
 " Indentation {{{
@@ -166,6 +168,7 @@ vnoremap <A-k> :m '<-2<CR>gv=gv
 
 " }}}
 " Plugin Settings {{{
+
 " deoplete {{{
 let g:deoplete#enable_at_startup = 1
 " }}}
@@ -181,19 +184,26 @@ lua << EOF
 
 vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
   vim.lsp.diagnostic.on_publish_diagnostics, {
-    virtual_text = false,
+    virtual_text = true,
     signs = true,
     update_in_insert = true,
   }
 )
 
 EOF
-"highlight LspDiagnosticsDefaultInformation guifg=#404040
-highlight LspDiagnosticsSignInformation guifg=#268bd2
-"highlight LspDiagnosticsDefaultWarning guifg=#404040
-highlight LspDiagnosticsSignWarning guifg=#b58900
-"highlight LspDiagnosticsDefaultError guifg=#404040
-highlight LspDiagnosticsSignError guifg=#dc322f
+
+
+hi! link LspDiagnosticsDefaultInformation Identifier
+hi! link LspDiagnosticsSignInformation Identifier
+hi! link LspDiagnosticsVirtualTextInformation NonText
+
+hi! link LspDiagnosticsDefaultWarning Type
+hi! link LspDiagnosticsSignWarning Type
+hi! link LspDiagnosticsVirtualTextWarning NonText
+
+hi! link LspDiagnosticsDefaultError Special
+hi! link LspDiagnosticsSignError Special
+hi! link LspDiagnosticsVirtualTextError NonText
 
 sign define LspDiagnosticsSignInformation text=⬤
 sign define LspDiagnosticsSignWarning text=▲
