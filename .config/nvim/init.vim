@@ -22,13 +22,12 @@ call plug#begin('~/projects/nvim-test/local/share/nvim/plugged')
 
     Plug 'Shougo/deoplete.nvim'
     Plug 'Shougo/deoplete-lsp'
-    Plug 'deoplete-plugins/deoplete-jedi'
 
     Plug 'junegunn/fzf.vim'
     set rtp+=~/.fzf
 
     Plug 'ciaranm/detectindent'
-    Plug 'ojroques/nvim-lspfuzzy'
+    "Plug 'ojroques/nvim-lspfuzzy'
     Plug 'nestorsalceda/vim-strip-trailing-whitespaces'
     Plug 'tpope/vim-fugitive'
     Plug 'troydm/easytree.vim'
@@ -41,36 +40,26 @@ syntax enable
 
 " }}}
 " Uset interface {{{
-
 " Set 7 lines to the cursor - when moving vertically using j/k
 set so=7
-
 " Ignore compiled files
 set wildignore=*.o,*~,*.pyc
 set wildignore+=.git\*,.hg\*,.svn\*
-
 " Height of the command bar
 set cmdheight=2
-
 " A buffer becomes hidden when it is abandoned
 set hidden
-
 " Ignore case when searching
 set ignorecase
-
 " When searching try to be smart about cases
 set smartcase
-
 " Don't redraw while executing macros (good performance config)
 set lazyredraw
-
 " For regular expressions turn magic on
 set magic
-
 " Open new splits to the right
 set splitright
 set splitbelow
-
 " }}}
 " Appearance {{{
 " Show matching brackets when text indicator is over them
@@ -86,6 +75,7 @@ set statusline=\ %F%m%r%h\ %w\ \ CWD:\ %r%{getcwd()}%h\ \ \ Line:\ %l
 
 set termguicolors
 
+set background=dark
 colorscheme solarized8_flat
 let g:airline_theme = 'base16'
 let g:airline_powerline_fonts = 1
@@ -178,7 +168,6 @@ lua <<EOF
 require'lspconfig'.clangd.setup{
     cmd = { "clangd-10", "--background-index", "--clang-tidy"}
 }
-require('lspfuzzy').setup {}
 EOF
 
 lua << EOF

@@ -63,11 +63,6 @@ Plug 'vimwiki/vimwiki'
 "Plug 'mhinz/vim-signify'
 Plug 'airblade/vim-gitgutter'
 Plug 'ciaranm/detectindent'
-"Plug 'SirVer/ultisnips'
-"Plug 'honza/vim-snippets'
-"Plug 'othree/xml.vim'
-"Plug 'm42e/arxml.vim', { 'for': 'arxml' }
-"Plug 'stephpy/vim-yaml', { 'for': 'yaml' }
 Plug 'edkolev/tmuxline.vim'
 "Plug 'vim-scripts/DrawIt'
 "Plug 'davidhalter/jedi-vim'
@@ -455,3 +450,11 @@ augroup fileautomation
   autocmd BufEnter index.wiki :VimwikiGenerateLinks
   autocmd BufEnter diary.wiki :VimwikiDiaryGenerateLinks
 augroup end
+
+func! __trim_ica_lista()
+  %s/.*checkbox__label">//
+  %s#</span>.*$##
+  %s#.*Ändra##
+  %s/^\n//
+endfun
+command! TrimIcaLista call __trim_ica_lista()
