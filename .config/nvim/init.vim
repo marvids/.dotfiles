@@ -33,6 +33,7 @@ call plug#begin('~/projects/nvim-test/local/share/nvim/plugged')
     Plug 'tpope/vim-fugitive'
     Plug 'troydm/easytree.vim'
     Plug 'rickhowe/diffchar.vim'
+    Plug 'neomake/neomake'
 call plug#end()
 
 filetype plugin indent on
@@ -260,6 +261,33 @@ noremap <leader>c :FzfCommands<CR>
 let g:detectindent_preferred_indent = 4
 autocmd BufReadPost * :DetectIndent
 
+" }}}
+" neomake {{{
+" Full config: ihen writing or reading a buffer, and on changes in insert and
+"
+" " normal mode (after 500ms; no delay when writing).
+"
+call neomake#configure#automake('nrwi', 500)
+let g:neomake_error_sign = {
+    \ 'text': '■',
+    \ 'texthl': 'Special',
+    \ }
+let g:neomake_warning_sign = {
+    \   'text': '▲',
+    \   'texthl': 'Type',
+    \ }
+let g:neomake_message_sign = {
+     \   'text': '➤',
+     \   'texthl': 'NeomakeMessageSign',
+     \ }
+let g:neomake_info_sign = {
+     \ 'text': '⬤',
+     \ 'texthl': 'Identifier'
+     \ }
+
+hi! link NeomakeVirtualtextError NonText
+hi! link NeomakeVirtualtextWarning NonText
+hi! link NeomakeVirtualtextInfo NonText
 " }}}
 " }}}
 
