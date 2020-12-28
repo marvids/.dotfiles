@@ -54,4 +54,6 @@ for file in ~/.bash.d/*; do
     fi
 done
 
+PROMPT_COMMAND='echo -ne "\033]0;${PWD}\007"'
+
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash

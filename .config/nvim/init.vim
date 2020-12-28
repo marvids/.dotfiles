@@ -27,7 +27,7 @@ call plug#begin('~/projects/nvim-test/local/share/nvim/plugged')
     set rtp+=~/.fzf
 
     Plug 'ciaranm/detectindent'
-    "Plug 'ojroques/nvim-lspfuzzy'
+    Plug 'ojroques/nvim-lspfuzzy'
     Plug 'nestorsalceda/vim-strip-trailing-whitespaces'
     Plug 'tpope/vim-fugitive'
     Plug 'troydm/easytree.vim'
@@ -90,11 +90,9 @@ syntax on
 
 " Show whitespace
 set listchars=tab:>-,trail:~,extends:>,precedes:<
-hi NonText ctermfg=237 ctermbg=none guifg=#3a3a3a guibg=NONE
-hi SpecialKey ctermfg=237 ctermbg=none guifg=#3a3a3a guibg=NONE
+hi NonText ctermfg=237 ctermbg=none gui=italic guifg=#586e75 guibg=NONE
+hi SpecialKey ctermfg=237 ctermbg=none guifg=#586e75 guibg=NONE
 set list
-
-hi! NonText gui=italic
 
 " }}}
 " Indentation {{{
@@ -166,7 +164,7 @@ let g:deoplete#enable_at_startup = 1
 " nvim-lsp {{{
 lua <<EOF
 require'lspconfig'.clangd.setup{
-    cmd = { "clangd-10", "--background-index", "--clang-tidy"}
+    cmd = { "clangd", "--background-index", "--clang-tidy"}
 }
 EOF
 
@@ -179,6 +177,7 @@ vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
     update_in_insert = true,
   }
 )
+require('lspfuzzy').setup {}
 
 EOF
 
@@ -195,9 +194,9 @@ hi! link LspDiagnosticsDefaultError Special
 hi! link LspDiagnosticsSignError Special
 hi! link LspDiagnosticsVirtualTextError NonText
 
-sign define LspDiagnosticsSignInformation text=⬤
+sign define LspDiagnosticsSignInformation text=⏺
 sign define LspDiagnosticsSignWarning text=▲
-sign define LspDiagnosticsSignError text=■
+sign define LspDiagnosticsSignError text=◼
 
 command! CodeFormat lua vim.lsp.buf.formatting()
 command! CodeAction lua vim.lsp.buf.code_action()
@@ -258,7 +257,7 @@ autocmd BufReadPost * :DetectIndent
 "
 call neomake#configure#automake('nrwi', 500)
 let g:neomake_error_sign = {
-    \ 'text': '■',
+    \ 'text': '◼',
     \ 'texthl': 'Special',
     \ }
 let g:neomake_warning_sign = {
@@ -266,11 +265,11 @@ let g:neomake_warning_sign = {
     \   'texthl': 'Type',
     \ }
 let g:neomake_message_sign = {
-     \   'text': '➤',
+     \   'text': '▶',
      \   'texthl': 'NeomakeMessageSign',
      \ }
 let g:neomake_info_sign = {
-     \ 'text': '⬤',
+     \ 'text': '⏺',
      \ 'texthl': 'Identifier'
      \ }
 
