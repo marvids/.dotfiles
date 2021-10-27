@@ -27,13 +27,13 @@ set palette defined ( 0 '#6c71c4',\
                       6 '#cb4b16',\
                       7 '#b58900')
 
-set object 1 rectangle from screen 0,0 to screen 1,1 fillcolor rgb"#073642" behind
+#set object 1 rectangle from screen 0,0 to screen 1,1 fillcolor rgb"#073642" behind
 
 set border lw 3 lc rgb "#839496"
 set xtics textcolor rgb "#839496"
 set ytics textcolor rgb "#839496"
-set xlabel "X" textcolor rgb "#839496"
-set ylabel "Y" textcolor rgb "#839496"
+#set xlabel "X" textcolor rgb "#839496"
+#set ylabel "Y" textcolor rgb "#839496"
 set key textcolor rgb "#839496"
 
 set term qt font "Ubuntu Mono, 11"

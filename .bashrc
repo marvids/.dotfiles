@@ -5,6 +5,8 @@
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
 
+export LC_NUMERIC="en_US.UTF-8"
+
 alias ls='ls --color=auto'
 alias grep='grep --color=auto'
 alias t='tmux attach || tmux new'
@@ -40,6 +42,8 @@ export HISTTIMEFORMAT='%F %T '
 
 export BAT_THEME="Solarized (dark)"
 
+export SHELLCHECK_OPTS="-e SC2039"
+
 # Append to bash_history instead of overwriting
 shopt -s histappend
 
@@ -57,3 +61,4 @@ done
 PROMPT_COMMAND='echo -ne "\033]0;${PWD}\007"'
 
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
+source "$HOME/.cargo/env"
