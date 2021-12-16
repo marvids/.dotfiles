@@ -17,6 +17,8 @@ set noswapfile
 
 set exrc
 
+set nofoldenable
+
 " }}}
 " Plugins {{{
 
@@ -35,6 +37,7 @@ call plug#begin('~/projects/nvim-test/local/share/nvim/plugged')
     Plug 'L3MON4D3/LuaSnip'
     Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
     Plug 'onsails/lspkind-nvim'
+    Plug 'liuchengxu/vista.vim'
 
     "Plug 'Shougo/deoplete.nvim'
     "Plug 'Shougo/deoplete-lsp'
@@ -48,17 +51,26 @@ call plug#begin('~/projects/nvim-test/local/share/nvim/plugged')
     Plug 'ojroques/nvim-lspfuzzy'
     Plug 'nestorsalceda/vim-strip-trailing-whitespaces'
     Plug 'tpope/vim-fugitive'
+    Plug 'tpope/vim-vinegar'
     Plug 'troydm/easytree.vim'
     Plug 'rickhowe/diffchar.vim'
     Plug 'neomake/neomake'
     Plug 'vimwiki/vimwiki'
     "Plug 'bfrg/vim-cpp-modern'
     "Plug 'octol/vim-cpp-enhanced-highlight'
-    Plug 'jackguo380/vim-lsp-cxx-highlight'
+    "Plug 'jackguo380/vim-lsp-cxx-highlight'
     "Plug 'm-pilia/vim-ccls'
     Plug 'tpope/vim-commentary'
     Plug 'SirVer/ultisnips'
     Plug 'vim-scripts/DoxygenToolkit.vim'
+    Plug 'dhruvasagar/vim-table-mode'
+
+    Plug 'file:///home/mikael.arvids/projects/markdown-preview.nvim', { 'do': 'cd app && yarn install'  }
+    "Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug']}
+    Plug 'vim-pandoc/vim-pandoc'
+    Plug 'vim-pandoc/vim-pandoc-syntax'
+    Plug 'vim-pandoc/vim-pandoc-after'
+    Plug 'aklt/plantuml-syntax'
 call plug#end()
 
 syntax enable
@@ -290,13 +302,6 @@ nvim_lsp.rust_analyzer.setup({
 --    on_attach=on_attach
 })
 
-vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
-  vim.lsp.diagnostic.on_publish_diagnostics, {
-    virtual_text = true,
-    signs = true,
-    update_in_insert = true,
-  }
-)
 require('lspfuzzy').setup {}
 
 local util = require 'lspconfig/util'
@@ -316,6 +321,8 @@ local util = require 'lspconfig/util'
 
 require'lspconfig'.jedi_language_server.setup{}
 
+require'lspconfig'.vimls.setup{}
+
 require'lspconfig'.clangd.setup{
     cmd = { "clangd", "--background-index", "--clang-tidy"};
     capabilities = capabilities;
@@ -326,28 +333,36 @@ require'lspconfig'.lemminx.setup{
     capabilities = capabilities;
 }
 
+local signs = { Error = "◼ ", Warn = "▲ ", Hint = "▶ ", Info = "⬤ " }
+for type, icon in pairs(signs) do
+  local hl = "DiagnosticSign" .. type
+  vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = "None" })
+end
+
+vim.diagnostic.config({
+  virtual_text = true,
+  signs = true,
+  underline = true,
+  update_in_insert = false,
+  severity_sort = false,
+  virtual_text = {
+    prefix = "◀",
+  }
+})
+
 EOF
 
-hi! link LspDiagnosticsDefaultHint None
-hi! link LspDiagnosticsSignHint None
-hi! link LspDiagnosticsVirtualTextHint NonText
+hi! link DiagnosticSignHint Identifier
+hi! link DiagnosticVirtualTextHint NonText
 
-hi! link LspDiagnosticsDefaultInformation Identifier
-hi! link LspDiagnosticsSignInformation Identifier
-hi! link LspDiagnosticsVirtualTextInformation NonText
+hi! link DiagnosticSignInformation Identifier
+hi! link DiagnosticVirtualTextInformation NonText
 
-hi! link LspDiagnosticsDefaultWarning Type
-hi! link LspDiagnosticsSignWarning Type
-hi! link LspDiagnosticsVirtualTextWarning NonText
+hi! link DiagnosticSignWarn Type
+hi! link DiagnosticVirtualTextWarn NonText
 
-hi! link LspDiagnosticsDefaultError Special
-hi! link LspDiagnosticsSignError Special
-hi! link LspDiagnosticsVirtualTextError NonText
-
-sign define LspDiagnosticsSignHint text=⬤
-sign define LspDiagnosticsSignInformation text=⬤
-sign define LspDiagnosticsSignWarning text=▲
-sign define LspDiagnosticsSignError text=◼
+hi! link DiagnosticSignError Special
+hi! link DiagnosticVirtualTextError NonText
 
 command! CodeFormat lua vim.lsp.buf.formatting()
 command! CodeRangeFormat lua vim.lsp.buf.range_formatting()
@@ -449,6 +464,7 @@ let wiki.path = '/onedrive/vimwiki'
 let wiki.syntax = 'markdown'
 let wiki.ext = '.md'
 let g:vimwiki_list = [wiki]
+let g:vimwiki_global_ext = 0
 
 command! -bang -nargs=* FzfVimWikiRg
   \ call fzf#vim#grep("rg --column --line-number --no-heading --color=always --smart-case ".shellescape(<q-args>), 1, {'dir': '/onedrive/vimwiki'}, <bang>0)
@@ -463,15 +479,17 @@ augroup fileautomation
 augroup end
 " }}}
 " vim-lsp-cxx-highlight {{{
-hi LspCxxHlGroupMemberVariable gui=bold guifg=#839496
+"hi LspCxxHlGroupMemberVariable gui=bold guifg=#839496
 " }}}
 " easytree {{{
 let g:easytree_git_enable = 0
+nnoremap <F2> :EasyTreeToggle<CR>
+nnoremap <leader>b :EasyTreeBufferReveal<CR>
 " }}}
 " nvim treesitter {{{
 lua <<EOF
 require'nvim-treesitter.configs'.setup {
-  ensure_installed = "cpp", -- one of "all", "maintained" (parsers with maintainers), or a list of languages
+  ensure_installed = "maintained", -- one of "all", "maintained" (parsers with maintainers), or a list of languages
   --ignore_install = { "javascript" }, -- List of parsers to ignore installing
   highlight = {
     enable = true,              -- false will disable the whole extension
@@ -508,6 +526,123 @@ EOF
 "  \ 'key_breakpoint': 'b',
 "  \ 'set_tkeymaps': "NvimGdbNoTKeymaps",
 "  \ }
+" }}}
+" markdown-preview {{{
+" set to 1, nvim will open the preview window after entering the markdown buffer
+" default: 0
+let g:mkdp_auto_start = 0
+
+" set to 1, the nvim will auto close current preview window when change
+" from markdown buffer to another buffer
+" default: 1
+let g:mkdp_auto_close = 0
+
+" set to 1, the vim will refresh markdown when save the buffer or
+" leave from insert mode, default 0 is auto refresh markdown as you edit or
+" move the cursor
+" default: 0
+let g:mkdp_refresh_slow = 0
+
+" set to 1, the MarkdownPreview command can be use for all files,
+" by default it can be use in markdown file
+" default: 0
+let g:mkdp_command_for_global = 0
+
+" set to 1, preview server available to others in your network
+" by default, the server listens on localhost (127.0.0.1)
+" default: 0
+let g:mkdp_open_to_the_world = 1
+
+" use custom IP to open preview page
+" useful when you work in remote vim and preview on local browser
+" more detail see: https://github.com/iamcco/markdown-preview.nvim/pull/9
+" default empty
+let g:mkdp_open_ip = 'se03-of-wd2679'
+
+" specify browser to open preview page
+" default: ''
+let g:mkdp_browser = ''
+
+" set to 1, echo preview page url in command line when open preview page
+" default is 0
+let g:mkdp_echo_preview_url = 1
+
+" a custom vim function name to open preview page
+" this function will receive url as param
+" default is empty
+function  OpenPreviewPage(url)
+  silent exec '!ssh se03-of-wl2078 DISPLAY=$(dig se03-of-wl2078.corp.int +short):0 /home/mikael.arvids/surf.sh ' . a:url
+endfunction
+let g:mkdp_browserfunc = 'OpenPreviewPage'
+
+" options for markdown render
+" mkit: markdown-it options for render
+" katex: katex options for math
+" uml: markdown-it-plantuml options
+" maid: mermaid options
+" disable_sync_scroll: if disable sync scroll, default 0
+" sync_scroll_type: 'middle', 'top' or 'relative', default value is 'middle'
+"   middle: mean the cursor position alway show at the middle of the preview page
+"   top: mean the vim top viewport alway show at the top of the preview page
+"   relative: mean the cursor position alway show at the relative positon of the preview page
+" hide_yaml_meta: if hide yaml metadata, default is 1
+" sequence_diagrams: js-sequence-diagrams options
+" content_editable: if enable content editable for preview page, default: v:false
+" disable_filename: if disable filename header for preview page, default: 0
+let g:mkdp_preview_options = {
+    \ 'mkit': {},
+    \ 'katex': {},
+    \ 'uml': { 'server': 'http://se03-of-wd2679:8880/plantuml'},
+    \ 'maid': {},
+    \ 'disable_sync_scroll': 0,
+    \ 'sync_scroll_type': 'middle',
+    \ 'hide_yaml_meta': 1,
+    \ 'sequence_diagrams': {},
+    \ 'flowchart_diagrams': {},
+    \ 'content_editable': v:false,
+    \ 'disable_filename': 0
+    \ }
+
+" use a custom markdown style must be absolute path
+" like '/Users/username/markdown.css' or expand('~/markdown.css')
+let g:mkdp_markdown_css = expand('~/.themes/solarized-dark/css/markdown.css')
+
+" use a custom highlight style must absolute path
+" like '/Users/username/highlight.css' or expand('~/highlight.css')
+let g:mkdp_highlight_css = expand('~/.themes/solarized-dark/css/highlight.css')
+
+" use a custom port to start server or random for empty
+let g:mkdp_port = '8800'
+
+" preview page title
+" ${name} will be replace with the file name
+let g:mkdp_page_title = '「${name}」'
+
+" recognized filetypes
+" these filetypes will have MarkdownPreview... commands
+let g:mkdp_filetypes = ['markdown', 'plantuml']
+
+autocmd FileType markdown,plantuml nnoremap <buffer> <M-p> :MarkdownPreview<CR>
+" }}}
+" pandoc {{{
+let g:pandoc#after#modules#enabled = ["tablemode"]
+let g:pandoc#syntax#codeblocks#embeds#langs = ["plantuml"]
+" }}}
+" vim-table-mode {{{
+" ReST-compatible table
+let g:table_mode_corner_corner='+'
+let g:table_mode_header_fillchar='='
+
+" Fix problem when filetype is markdown before setting it to pandoc
+autocmd FileType pandoc unlet b:table_mode_corner
+" }}}
+
+" vim-vista {{{
+let g:vista_icon_indent = ["╰─▸ ", "├─▸ "]
+let g:vista_executive_for = {
+  \ 'cpp': 'nvim_lsp'
+  \ }
+nnoremap <F3> :Vista!!<CR>
 " }}}
 " }}}
 

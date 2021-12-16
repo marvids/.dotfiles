@@ -60,5 +60,8 @@ done
 
 PROMPT_COMMAND='echo -ne "\033]0;${PWD}\007"'
 
+# Save bash history immediately
+PROMPT_COMMAND="$PROMPT_COMMAND; history -a"
+
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
 source "$HOME/.cargo/env"
